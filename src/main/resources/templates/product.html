@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+
+<head th:replace="~{template :: basicHead(${product.getProductName()})}"></head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+<script th:replace="~{template :: appPath}"></script>
+
+<header th:replace="~{template :: basicHeader}"></header>
+<main class="flex-grow">
+
+    <!-- Trolley code: -->
+    <
+    <div th:replace="~{template :: basicControllerTrolley}"></div>
+    <!-- Trolley code: -->
+
+    <!--        Thymeleaf       -->
+    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden md:col-span-2">
+                <img
+                        th:src="@{/{productURL}(productURL = ${product.getProductIcon()})}"
+                        class="w-full h-96 object-cover" th:alt="${product.getProductName()}"/>
+                <div class="p-6">
+                    <div style="display:flex">
+                        <h3 class="text-xl font-display mb-2 mr-3" th:text="${product.getProductName()}"></h3>
+                        <th:block th:if="${average.isPresent()}">
+                            <span th:text="${average.get()}" class="text-xl font-display mb-2 mr-2"></span>
+
+                            <span th:each="num: ${#numbers.sequence(1,5)}">
+                                <i th:if="${num<=average.get()}" class="fa-solid fa-star fa-bounce abracadabra"></i>
+                                <span th:if="${num>average.get()}">
+                                    <i th:if="${average.get()>num - 1}" class="fa-solid fa-star fa-bounce halfStar"></i>
+                                    <i th:unless="${average.get()>num - 1}" class="fa-solid fa-star fa-bounce"></i>
+                                </span>
+                            </span>
+
+                        </th:block>
+                        <th:block th:if="${average.isEmpty()}">
+                            <span class="text-xl font-display mb-2 mr-2">No hay reseñas sobre este producto</span>
+                        </th:block>
+                    </div>
+                    <p class="text-gray-600 mb-4" th:text="${product.getProductDescription()}"></p>
+                    <button
+                            class="add-to-cart-button bg-custom text-white px-6 py-2 !rounded-button hover:bg-opacity-90 transition"
+                            th:data-product-id="${product.getProductId()}">
+                        Add to
+                        Cart - <span th:text="${#numbers.formatDecimal(product.getPrice(), 1, 2)}"></span> $
+                    </button>
+
+                </div>
+            </div>
+            <th:block th:if="${average.isPresent()}">
+                <div th:each="feedback : ${feedbacks}"
+                     class="bg-white rounded-lg shadow-lg overflow-hidden md:col-span-2 p-6">
+                    <div>
+                        <span th:text="${feedback.username}" class="text-xl font-display mb-1 mr-2"></span>
+                        <span th:each="num: ${#numbers.sequence(1,5)}">
+                            <i th:if="${num<=feedback.getStars()}" class="fa-solid fa-star fa-bounce abracadabra"></i>
+                        <span th:if="${num>feedback.getStars()}">
+                            <i th:if="${feedback.getStars()>num - 1}" class="fa-solid fa-star fa-bounce halfStar"></i>
+                            <i th:unless="${feedback.getStars()>num - 1}" class="fa-solid fa-star fa-bounce"></i>
+                        </span>
+                    </span>
+                    </div>
+                    <div class="mb-2">
+                        <span th:text="${feedback.getDate().toLocalDate()}" class="text-gray-600 mr-2"></span>
+                        <span th:text="${feedback.getDate().toLocalTime()}" class="text-gray-600"></span>
+                    </div>
+                    <div><span th:text="${feedback.getComment()}"></span></div>
+                </div>
+            </th:block>
+        </div>
+    </div>
+    <!--        Thymeleaf       -->
+
+    <!--		trolley			-->
+    <div th:replace="~{template :: basicTrolleyCode}"></div>
+    <!--		trolley			-->
+
+</main>
+
+
+<footer th:replace="~{template :: basicFooter}"></footer>
+<script th:replace="~{template :: basicScriptTrolley}"></script>
+<script th:replace="~{template :: functionalityAddToShoppingCartJs}"></script>

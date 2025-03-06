@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:fragment="basicHead(title)">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title th:text="|Hag's Bunion - ${title}|"></title>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&amp;family=Cormorant+Garamond:wght@400;600&amp;display=swap"
+            rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.core.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/css/glide.theme.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="https://ai-public.creatie.ai/gen_page/tailwind-custom.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.6.0/glide.min.js"></script>
+    <script
+            src="https://cdn.tailwindcss.com/3.4.5?plugins=forms@0.5.7,typography@0.5.13,aspect-ratio@0.4.2,container-queries@0.1.1"></script>
+    <script src="https://ai-public.creatie.ai/gen_page/tailwind-config.min.js" data-color="#000000"
+            data-border-radius="small"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+
+        body {
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        .font-display {
+            font-family: 'Cinzel', serif;
+        }
+
+        .abracadabra {
+            color: orange;
+        }
+
+        .halfStar {
+            display: inline-block;
+            background: linear-gradient(90deg, orange 50%, black 50%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            color: gray; /* Fallback para navegadores que no soporten background-clip */
+        }
+
+        input[type="number"]::-webkit-inner-spin-button,
+        input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+<script th:fragment="appPath" th:inline="javascript">
+
+    const appPath = '[(@{/})]'
+
+</script>
+<header th:fragment="basicHeader" class="bg-gray-900 text-white">
+    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-20">
+            <div class="flex items-center">
+                <img th:src="@{/img/index/logoIniciales.png}" alt="Hag´s Bunion" class="h-12"/>
+                <span class="ml-3 text-xl font-display">Hag&#39;s Bunion</span>
+            </div>
+            <nav class="hidden md:flex space-x-8">
+                <a th:href="@{/}" class="hover:text-custom transition">Home</a>
+                <a th:href="@{/shop}" class="hover:text-custom transition">Shop</a>
+                <a href="#" class="hover:text-custom transition">About</a>
+                <a th:href="@{/contact}" class="hover:text-custom transition">Contact</a>
+            </nav>
+            <div class="flex items-center space-x-6">
+                <div class="relative">
+                    <input type="text" placeholder="Search spells..."
+                           class="pl-10 pr-4 py-2 bg-gray-800 rounded-button focus:ring-2 focus:ring-custom focus:outline-none"/>
+                    <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                </div>
+
+                <button class="relative !rounded-button" id="cartButton">
+                    <i class="fas fa-shopping-cart text-xl"></i>
+                    <span th:text="${shoppingCartProductsCount}"
+                          class="absolute -top-2 -right-2 bg-custom text-white text-xs rounded-full h-5 w-5 flex items-center justify-center"></span>
+                </button>
+
+                <button class="!rounded-button">
+                    <i class="fas fa-user text-xl"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</header>
+<main class="flex-grow">
+
+    <!-- Trolley code: -->
+    <div th:fragment="basicControllerTrolley" class="glide hero-slider relative h-[500px] bg-white chop"
+         style="display: none;">
+        <div class="glide__track chop" data-glide-el="track">
+            <ul class="glide__slides chop">
+                <li class="glide__slide relative chop">
+
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+    <!--		trolley			-->
+
+
+    <div id="cartDrawer" th:fragment="basicTrolleyCode"
+         class="fixed inset-y-0 right-0 w-full md:w-[480px] bg-white shadow-xl transform translate-x-full transition-transform duration-300 z-50">
+        <div class="h-full flex flex-col">
+            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+                <h2 th:text="|Shopping Cart (${shoppingCartProductsCount})|" class="text-2xl font-display"></h2>
+                <a th:href="@{/clear-trolley(lastUrl = ${lastUrl})}">
+                    <button class="text-gray-400 hover:text-red-500">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </a>
+                <button class="text-gray-500 hover:text-gray-700" id="closeCart">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="flex-grow overflow-y-auto px-6 py-4">
+                <div class="space-y-6">
+
+
+                    <div th:each="cartItem : ${shoppingCartProducts}" class="flex items-center space-x-4">
+                        <img th:src="@{${cartItem.getProduct().getProductIcon()}}"
+                             class="w-20 h-20 object-cover rounded" alt="Crystal Ball"/>
+                        <div class="flex-grow">
+                            <h3 th:text="${cartItem.getProduct().getProductName()}" class="font-display"></h3>
+                            <p class="text-gray-600"><span
+                                    th:text="${#numbers.formatDecimal(cartItem.getProduct().getPrice(), 1, 2)}"></span>
+                                $</p>
+                            <div class="flex items-center space-x-2 mt-2">
+                                <a th:href="@{/remove-from-trolley/{productId}(productId = ${cartItem.getProduct().getProductId()},lastUrl = ${lastUrl})}">
+                                    <button
+                                            class="w-6 h-6 flex items-center justify-center border border-gray-300 !rounded-button hover:border-custom">
+                                        -
+                                    </button>
+                                </a>
+                                <input type="number" th:value="${cartItem.getItemsCount()}"
+                                       class="w-12 text-center border-gray-300 !rounded-button"/>
+
+                                <button
+                                        class="add-to-cart-button w-6 h-6 flex items-center justify-center border border-gray-300 !rounded-button hover:border-custom"
+                                        th:data-product-id="${cartItem.getProduct().getProductId()}">
+                                    +
+                                </button>
+
+                            </div>
+                        </div>
+                        <a th:href="@{/delete-from-trolley/{productId}(productId = ${cartItem.getProduct().getProductId()},lastUrl = ${lastUrl})}">
+                            <button class="text-gray-400 hover:text-red-500">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+            <div class="border-t border-gray-200 px-6 py-4">
+                <div class="space-y-2 mb-4">
+                    <div class="flex justify-between">
+                        <span>Subtotal</span>
+                        <span><span
+                                th:text="${#numbers.formatDecimal(shoppingCartProductsPriceTotal, 1, 2)}"></span>$</span>
+                    </div>
+                    <div class="flex justify-between text-gray-600">
+                        <span>Shipping</span>
+                        <span th:if="${shoppingCartProductsPriceTotal>=50}">0,00$</span>
+                        <span th:if="${shoppingCartProductsPriceTotal<50}">4,99$</span>
+                    </div>
+                    <div class="flex justify-between text-gray-600">
+                        <span>Taxes</span>
+                        <span><span
+                                th:text="${#numbers.formatDecimal((shoppingCartProductsPriceTotal*0.19), 1, 2)}"></span>$</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Total</span>
+                        <span th:if="${shoppingCartProductsPriceTotal<50}"><span
+                                th:text="${#numbers.formatDecimal((shoppingCartProductsPriceTotal + (shoppingCartProductsPriceTotal * 0.19) + 4.99), 1, 2)}"></span>$</span>
+                        <span th:unless="${shoppingCartProductsPriceTotal<50}"><span
+                                th:text="${#numbers.formatDecimal((shoppingCartProductsPriceTotal + (shoppingCartProductsPriceTotal * 0.19)), 1, 2)}"></span>$</span>
+                    </div>
+                </div>
+                <button style="color: white"
+                        class="w-full bg-custom py-3 !rounded-button hover:bg-opacity-90 transition border-black">
+                    Proceed to Checkout
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!--		trolley			-->
+
+</main>
+
+
+<footer th:fragment="basicFooter" class="bg-gray-900 text-white py-10">
+    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div>
+                <h3 class="font-display text-lg mb-4">Newsletter</h3>
+                <p class="text-gray-400 mb-4">Subscribe to receive magical updates</p>
+                <div class="flex">
+                    <input type="email" placeholder="Enter your email"
+                           class="flex-grow bg-gray-800 rounded-l-button px-4 py-2 focus:ring-2 focus:ring-custom focus:outline-none"/>
+                    <button class="bg-custom px-4 !rounded-r-button hover:bg-opacity-90">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+            <div>
+                <h3 class="font-display text-lg mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="#" class="text-gray-400 hover:text-white">About Us</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Contact</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Shipping Policy</a></li>
+                    <li><a href="#" class="text-gray-400 hover:text-white">Returns</a></li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-display text-lg mb-4">Contact Us</h3>
+                <ul class="space-y-2 text-gray-400">
+                    <li><i class="fas fa-map-marker-alt w-6"></i> 123 Mystic Lane</li>
+                    <li><i class="fas fa-phone w-6"></i> (555) 123-4567</li>
+                    <li><i class="fas fa-envelope w-6"></i> magic@arcane.com</li>
+                </ul>
+            </div>
+            <div>
+                <h3 class="font-display text-lg mb-4">Follow Us</h3>
+                <div class="flex space-x-4">
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="text-gray-400 hover:text-white"><i class="fab fa-pinterest"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
+            <p>© 2024 Arcane Emporium. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+<script th:fragment="basicScriptTrolley">
+    new Glide('.glide', {
+        type: 'carousel',
+        startAt: 0,
+        perView: 1,
+        autoplay: 5000
+    }).mount();
+    const cartButton = document.getElementById('cartButton');
+    const cartDrawer = document.getElementById('cartDrawer');
+    const closeCart = document.getElementById('closeCart');
+    cartButton.addEventListener('click', () => {
+        cartDrawer.classList.remove('translate-x-full');
+    });
+    closeCart.addEventListener('click', () => {
+        cartDrawer.classList.add('translate-x-full');
+    });
+</script>
+<script th:src="@{/js/buttonsFunctionalityAddToShoppingCart.js}"
+        th:fragment="functionalityAddToShoppingCartJs"></script>

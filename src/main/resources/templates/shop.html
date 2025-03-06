@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{template :: basicHead('Shop')}"></head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+<script th:replace="~{template :: appPath}"></script>
+
+<header th:replace="~{template :: basicHeader}"></header>
+    <main class="flex-grow">
+
+        <!-- Trolley code: -->
+        <div th:replace="~{template :: basicControllerTrolley}"></div>
+
+        <!-- Shop -->
+
+        <div class="flex gap-8 ">
+            <aside class="w-64 flex-shrink-0 ml-6 mr-4 mt-5">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-lg font-semibold mb-4">Filters</h3>
+
+                    <div class="space-y-4">
+                        <div>
+                            <h4 class="font-medium mb-2">Type</h4>
+                            <div class="space-y-2">
+                                <!-- foreach categories -->
+                                <label th:each="category : ${categories}" class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox text-custom" />
+                                    <span class="ml-2 text-sm"><span th:text="${category.getTitle()}"></span> </span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Subcategories -->
+                        <div>
+                            <h4 class="font-medium mb-2">Magical Purpose</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox text-custom" />
+                                    <span class="ml-2 text-sm">Protection</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox text-custom" />
+                                    <span class="ml-2 text-sm">Love</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox text-custom" />
+                                    <span class="ml-2 text-sm">Prosperity</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox text-custom" />
+                                    <span class="ml-2 text-sm">Healing</span>
+                                </label>
+                            </div>
+                        </div>
+                        <!-- Price Range -->
+                        <div>
+                            <h4 class="font-medium mb-2">Price Range</h4>
+                            <div class="space-y-2">
+                                <input type="range" min="0" max="500"
+                                    class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer" />
+                                <div class="flex justify-between text-sm text-gray-600">
+                                    <span>$0</span>
+                                    <span>$500</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <!-- Product´s Attributes? -->
+            <div class="flex-1">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold mt-6">Magical Items</h2>
+                    <div class="flex items-center space-x-4 mt-4 mr-6">
+                        <select class="form-select border-gray-300 rounded-md text-sm">
+                            <option>Sort by: Featured</option>
+                            <option>Price: Low to High</option>
+                            <option>Price: High to Low</option>
+                            <option>Newest Arrivals</option>
+                        </select>
+                        <div class="flex space-x-2">
+                            <button class="p-2 text-gray-400 hover:text-custom">
+                                <i class="fas fa-th-large"></i>
+                            </button>
+                            <button class="p-2 text-gray-400 hover:text-custom">
+                                <i class="fas fa-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mr-8">
+                    <!-- foreach products (caution with pagination) -->
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <img src="https://creatie.ai/ai/api/search-image?query=A professional product photography of a mystical crystal on a dark purple velvet background with soft lighting and shallow depth of field, creating an ethereal and magical atmosphere&width=400&height=300&orientation=landscape&flag=d1a97b48-736f-4ab9-9cba-4a61aac7acec&flag=3df17609-1ef7-4d4f-81e3-f9a5d9fa44d0"
+                            alt="Crystal" class="w-full h-48 object-cover" />
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-2">Amethyst Crystal</h3>
+                            <p class="text-sm text-gray-600 mb-3">Enhances spiritual awareness and psychic abilities</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold text-custom">$29.99</span>
+                                <button
+                                    class="!rounded-button bg-custom text-white px-4 py-2 text-sm hover:bg-opacity-90">
+                                    <i class="fas fa-cart-plus mr-2"></i>Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <img src="https://creatie.ai/ai/api/search-image?query=A professional product photography of an ancient spell book with leather cover and gold embossing on a dark purple velvet background with mystical lighting&width=400&height=300&orientation=landscape&flag=aa225b6d-2885-4c77-a316-4667c6e6f648&flag=0a46a9aa-63b7-4fd1-a6c6-9e4ad2e2e140"
+                            alt="Spellbook" class="w-full h-48 object-cover" />
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-2">Ancient Grimoire</h3>
+                            <p class="text-sm text-gray-600 mb-3">Collection of powerful spells and rituals</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold text-custom">$89.99</span>
+                                <button
+                                    class="!rounded-button bg-custom text-white px-4 py-2 text-sm hover:bg-opacity-90">
+                                    <i class="fas fa-cart-plus mr-2"></i>Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg shadow overflow-hidden">
+                        <img src="https://creatie.ai/ai/api/search-image?query=A professional product photography of a ornate brass cauldron with intricate engravings on a dark purple velvet background with mystical smoke effects&width=400&height=300&orientation=landscape&flag=e81fa92c-cbf0-47b5-bc48-3d9a0e3cf750&flag=190c0863-028e-4ce0-b36d-922357641cb2"
+                            alt="Cauldron" class="w-full h-48 object-cover" />
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-2">Brass Cauldron</h3>
+                            <p class="text-sm text-gray-600 mb-3">Perfect for brewing potions and ritual work</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-lg font-bold text-custom">$149.99</span>
+                                <button
+                                    class="!rounded-button bg-custom text-white px-4 py-2 text-sm hover:bg-opacity-90">
+                                    <i class="fas fa-cart-plus mr-2"></i>Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow overflow-hidden"><img
+                            src="https://creatie.ai/ai/api/search-image?query=A professional product photography of magical herbs and dried flowers on dark purple velvet&width=400&height=300&orientation=landscape&flag=3eb6023c-04e0-4279-be44-8c4e9b9ee54f"
+                            alt="Herbs" class="w-full h-48 object-cover" />
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-2">Sacred Herbs Bundle</h3>
+                            <p class="text-sm text-gray-600 mb-3">Carefully selected herbs for ritual cleansing</p>
+                            <div class="flex justify-between items-center"><span
+                                    class="text-lg font-bold text-custom">$19.99</span><button
+                                    class="!rounded-button bg-custom text-white px-4 py-2 text-sm hover:bg-opacity-90"><i
+                                        class="fas fa-cart-plus mr-2"></i>Add to Cart</button></div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow overflow-hidden"><img
+                            src="https://creatie.ai/ai/api/search-image?query=A professional product photography of mystical tarot cards on dark purple velvet&width=400&height=300&orientation=landscape&flag=b4d2faca-a513-44d2-b60f-78ca3a35959e"
+                            alt="Tarot" class="w-full h-48 object-cover" />
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-2">Mystic Tarot Deck</h3>
+                            <p class="text-sm text-gray-600 mb-3">Ancient wisdom captured in beautiful artwork</p>
+                            <div class="flex justify-between items-center"><span
+                                    class="text-lg font-bold text-custom">$45.99</span><button
+                                    class="!rounded-button bg-custom text-white px-4 py-2 text-sm hover:bg-opacity-90"><i
+                                        class="fas fa-cart-plus mr-2"></i>Add to Cart</button></div>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow overflow-hidden"><img
+                            src="https://creatie.ai/ai/api/search-image?query=A professional product photography of an ornate magic wand on dark purple velvet&width=400&height=300&orientation=landscape&flag=77ed817d-1b2a-423d-b06f-66597818728d"
+                            alt="Wand" class="w-full h-48 object-cover" />
+                        <div class="p-4">
+                            <h3 class="font-semibold text-lg mb-2">Enchanted Wand</h3>
+                            <p class="text-sm text-gray-600 mb-3">Hand-carved from ancient oak wood</p>
+                            <div class="flex justify-between items-center"><span
+                                    class="text-lg font-bold text-custom">$79.99</span><button
+                                    class="!rounded-button bg-custom text-white px-4 py-2 text-sm hover:bg-opacity-90"><i
+                                        class="fas fa-cart-plus mr-2"></i>Add to Cart</button></div>
+                        </div>
+                    </div>
+                </div>
+<!-- CSS syntax is similar to bootstrap. I include mb-8 and give margin bottom to the buttons for change page -->
+ <!-- PAGINATION -->
+                <div class="mt-8 mb-8 flex justify-center">
+                    <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                        <a href="#"
+                            class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                        <a href="#"
+                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-custom">1</a>
+                        <a href="#"
+                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">2</a>
+                        <a href="#"
+                            class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">3</a>
+                        <a href="#"
+                            class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+
+        <!--		trolley			-->
+        <div th:replace="~{template :: basicTrolleyCode}"></div>
+
+        <!--		trolley			-->
+
+    </main>
+
+
+
+<footer th:replace="~{template :: basicFooter}"></footer>
+<script th:replace="~{template :: basicScriptTrolley}"></script>

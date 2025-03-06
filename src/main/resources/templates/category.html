@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="en">
+
+<head th:replace="~{template :: basicHead(${category.getTitle()})}"></head>
+
+<body class="bg-gray-50 min-h-screen flex flex-col">
+<script th:replace="~{template :: appPath}"></script>
+<header th:replace="~{template :: basicHeader}"></header>
+<main class="flex-grow">
+
+    <!-- Trolley code: -->
+    <div th:replace="~{template :: basicControllerTrolley}"></div>
+    <!-- Trolley code: -->
+
+    <!--        Thymeleaf       -->
+    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h1 class="text-4xl font-display mb-8" th:text="${category.getTitle()}"></h1>
+        <p class="text-gray-600 mb-12 max-w-3xl" th:text="${category.getCategoryDescription()}"></p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden" th:each="product : ${products}">
+                <img
+                        th:src="@{/{productURL}(productURL = ${product.getProductIcon()})}"
+                        class="w-full h-64 object-cover" th:alt="${product.getProductName()}"/>
+                <div class="p-6">
+                    <a th:href="@{/product/{productID}(productID = ${product.getProductId()})}">
+                        <h3 class="text-xl font-display mb-2" th:text="${product.getProductName()}"></h3>
+                        <th:block th:if="${averages[productStat.index].isPresent()}">
+                            <span th:text="${averages[productStat.index].get()}"
+                                  class="text-xl font-display mb-2 mr-2"></span>
+
+                            <span th:each="num: ${#numbers.sequence(1,5)}">
+                                <i th:if="${num<=averages[productStat.index].get()}"
+                                   class="fa-solid fa-star fa-bounce abracadabra"></i>
+                                <span th:if="${num>averages[productStat.index].get()}">
+                                    <i th:if="${averages[productStat.index].get()>num - 1}"
+                                       class="fa-solid fa-star fa-bounce halfStar"></i>
+                                    <i th:unless="${averages[productStat.index].get()>num - 1}"
+                                       class="fa-solid fa-star fa-bounce"></i>
+                                </span>
+                            </span>
+
+                        </th:block>
+                        <th:block th:if="${averages[productStat.index].isEmpty()}">
+                            <span class="font-display mb-2 mr-2">No hay reseñas sobre este producto</span>
+                        </th:block>
+                    </a>
+                    <p class="text-gray-600 mb-4" th:text="${product.getProductDescription()}"></p>
+
+                    <button
+                            class="add-to-cart-button bg-custom text-white px-6 py-2 !rounded-button hover:bg-opacity-90 transition"
+                            th:data-product-id="${product.getProductId()}">
+                        Add to
+                        Cart - <th:block th:text="${#numbers.formatDecimal(product.getPrice(), 1, 2)}"></th:block> $
+                    </button>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+    <!--        Thymeleaf       -->
+
+    <!--		trolley			-->
+    <div th:replace="~{template :: basicTrolleyCode}"></div>
+
+    <!--		trolley			-->
+
+</main>
+
+
+<footer th:replace="~{template :: basicFooter}"></footer>
+<script th:replace="~{template :: basicScriptTrolley}"></script>
+<script th:replace="~{template :: functionalityAddToShoppingCartJs}"></script>
