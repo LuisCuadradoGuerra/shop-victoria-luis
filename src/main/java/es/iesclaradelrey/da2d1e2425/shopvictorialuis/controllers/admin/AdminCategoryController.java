@@ -7,6 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 @Controller
 @RequestMapping("/admin/categories")
 public class AdminCategoryController {
@@ -25,6 +29,13 @@ public class AdminCategoryController {
                             @RequestParam(defaultValue = "asc") String orderDirection,
                             Model model) {
         model.addAttribute("page", categoryService.findAll(pageNumber, pageSize, orderAttribute, orderDirection));
+        Map<String, String> fields = new LinkedHashMap<>();
+        fields.put("title", "Title");
+        fields.put("categoryDescription", "Description");
+        fields.put("categoryId", "Category Id");
+        model.addAttribute("fields", fields);
+        model.addAttribute("orderAttribute", orderAttribute);
+        model.addAttribute("orderDirection", orderDirection);
         return "/admin/admin-categories";
     }
 

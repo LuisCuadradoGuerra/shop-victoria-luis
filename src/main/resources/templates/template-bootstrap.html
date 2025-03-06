@@ -7,6 +7,77 @@
 </head>
 <body>
 
+<form class="form" method="get" th:fragment="adminOrderForm(fields)">
+    <fieldset class="form-group m-5 p-4">
+        <legend class="m-3">View Control</legend>
+        <div class="row">
+            <div class="mb-4 col-auto">
+                <label class="form-label" for="order">Order
+                    <select class="form-select" id="order" name="orderAttribute">
+                        <option th:each="field : ${fields}" th:text="${field.getValue()}" th:value="${field.getKey()}" th:selected="${orderAttribute == field.getKey()}"></option>
+                    </select>
+                </label>
+            </div>
+            <div class="mb-5 col-auto">
+                <label class="form-label" for="elementsByPage">Elements by page</label>
+                <input class="form-control" id="elementsByPage" name="pageSize" type="number" min="1"
+                       th:value="${page.numberOfElements}">
+            </div>
+            <div class="form-check mb-4 col-auto">
+                <label class="form-check-label m-3" for="directionAsc">Ascending
+                    <input class="form-check-input" id="directionAsc" name="orderDirection" type="radio" value="asc"
+                           th:checked="${orderDirection == 'asc'}"></label>
+                <label class="form-check-label m-3" for="directionDes">Descending
+                    <input class="form-check-input" id="directionDes" name="orderDirection" type="radio" value="desc"
+                           th:checked="${orderDirection == 'desc'}"></label>
+            </div>
+        </div>
+        <button class="btn btn-primary" type="submit">Apply</button>
+    </fieldset>
+</form>
+
+
+<div th:fragment="adminPagination">
+    <p>Página <span th:text="${page.number+1}"></span> de <span th:text="${page.totalPages}"></span></p>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li th:classappend="${page.isFirst()} ? 'disabled' : ''" class="page-item">
+                <span class="page-link" th:if="${page.isFirst()}">Previous</span>
+                <a class="page-link" th:unless="${page.isFirst()}"
+                   th:href="@{/admin/categories(pageNumber=${page.getNumber()})}">Previous</a>
+            </li>
+
+            <li class="page-item" th:if="${page.number > 1}"><a class="page-link"
+                                                                th:href="@{/admin/categories(pageNumber=${page.getNumber()-1}, pageSize=${page.getSize()}, orderAttribute=${orderAttribute}, orderDirection=${orderDirection})}"
+                                                                th:text="${page.getNumber()-1}"></a>
+            </li>
+            <li class="page-item" th:if="${page.number > 0}"><a class="page-link"
+                                                                th:href="@{/admin/categories(pageNumber=${page.getNumber()}, pageSize=${page.getSize()}, orderAttribute=${orderAttribute}, orderDirection=${orderDirection})}"
+                                                                th:text="${page.getNumber()}"></a>
+            </li>
+            <li class="page-item active"><a class="page-link"
+                                            th:href="@{/admin/categories(pageNumber=${page.getNumber()+1}, pageSize=${page.getSize()}, orderAttribute=${orderAttribute}, orderDirection=${orderDirection})}"
+                                            th:text="${page.getNumber()+1}"></a>
+            </li>
+            <li class="page-item" th:if="${page.number < (page.totalPages - 1)}"><a class="page-link"
+                                                                                    th:href="@{/admin/categories(pageNumber=${page.getNumber()+2}, pageSize=${page.getSize()}, orderAttribute=${orderAttribute}, orderDirection=${orderDirection})}"
+                                                                                    th:text="${page.getNumber()+2}"></a>
+            </li>
+            <li class="page-item" th:if="${page.number < (page.totalPages - 2)}"><a class="page-link"
+                                                                                    th:href="@{/admin/categories(pageNumber=${page.getNumber()+3}, pageSize=${page.getSize()}, orderAttribute=${orderAttribute}, orderDirection=${orderDirection})}"
+                                                                                    th:text="${page.getNumber()+3}"></a>
+            </li>
+
+            <li th:classappend="${page.isLast()} ? 'disabled' : ''" class="page-item">
+                <span class="page-link" th:if="${page.isLast()}">Next</span>
+                <a class="page-link" th:unless="${page.isLast()}"
+                   th:href="@{/admin/categories(pageNumber=${page.getNumber()+2})}">Next</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
 <script th:fragment="scriptBootstrap" src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
 </body>
 </html>
