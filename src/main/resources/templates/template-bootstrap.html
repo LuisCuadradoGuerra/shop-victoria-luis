@@ -21,7 +21,7 @@
             <div class="mb-5 col-auto">
                 <label class="form-label" for="elementsByPage">Elements by page</label>
                 <input class="form-control" id="elementsByPage" name="pageSize" type="number" min="1"
-                       th:value="${page.numberOfElements}">
+                       th:value="${page.getSize()}">
             </div>
             <div class="form-check mb-4 col-auto">
                 <label class="form-check-label m-3" for="directionAsc">Ascending
