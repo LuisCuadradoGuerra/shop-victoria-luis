@@ -35,7 +35,7 @@ public class AdminProductController {
                         Model model) {
         model.addAttribute("page", productService.findAll(pageNumber, pageSize, orderAttribute, orderDirection));
         Map<String, String> fields = new LinkedHashMap<>();
-        fields.put("productName", "name");
+        fields.put("productName", "Name");
         fields.put("productDescription", "Description");
         fields.put("productId", "Product Id");
         model.addAttribute("fields", fields);

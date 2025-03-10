@@ -26,7 +26,7 @@
     </tbody>
 </table>
 
-<div th:replace="~{template-bootstrap :: adminPagination}"></div>
+<div th:replace="~{template-bootstrap :: adminPagination('/admin/categories', ${page}, ${orderAttribute}, ${orderDirection})}"></div>
 <script th:replace="~{template-bootstrap :: scriptBootstrap}"></script>
 </body>
 </html>
