@@ -1,7 +1,10 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.services;
 
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.AddProductDto;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -11,7 +14,7 @@ public interface ProductService {
     List<Product> findAll();
     Optional<Product> findByProductId(Long id);
     List<Product> findByCategoryId(Long categoryId);
-
+    Page<Product> findAll(Integer pageNumber, Integer pageSize, String orderAttribute, String orderDirection);
 
 //    Consultas sql y jpql
 

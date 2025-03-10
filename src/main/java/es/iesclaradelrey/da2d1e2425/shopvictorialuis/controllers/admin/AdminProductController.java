@@ -8,11 +8,11 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/admin/products")
@@ -27,6 +27,23 @@ public class AdminProductController {
         this.productService = productService;
     }
 
+    @GetMapping({"/", ""})
+    public String index(@RequestParam(defaultValue = "1") Integer pageNumber,
+                        @RequestParam(defaultValue = "5") Integer pageSize,
+                        @RequestParam(defaultValue = "productName") String orderAttribute,
+                        @RequestParam(defaultValue = "asc") String orderDirection,
+                        Model model) {
+        model.addAttribute("page", productService.findAll(pageNumber, pageSize, orderAttribute, orderDirection));
+        Map<String, String> fields = new LinkedHashMap<>();
+        fields.put("productName", "name");
+        fields.put("productDescription", "Description");
+        fields.put("productId", "Product Id");
+        model.addAttribute("fields", fields);
+        model.addAttribute("orderAttribute", orderAttribute);
+        model.addAttribute("orderDirection", orderDirection);
+        return "/admin/admin-products";
+    }
+
     @GetMapping("/create-new-product")
     public String createNewProduct(Model model) {
         List<Category> categories = categoryService.findAll();
@@ -34,6 +51,7 @@ public class AdminProductController {
         model.addAttribute("product", new AddProductDto());
         return "/admin/create-new-product";
     }
+
 
     @PostMapping("/create-new-product")
     public String createNewProductSubmit(@Valid @ModelAttribute("product") AddProductDto addProductDto,

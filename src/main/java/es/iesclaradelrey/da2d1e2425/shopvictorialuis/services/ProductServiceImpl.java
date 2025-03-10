@@ -5,6 +5,9 @@ import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.CategoryRepository;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.ProductRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -43,6 +46,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> findByCategoryId(Long categoryId) {
         return productRepository.findAllByCategoriesCategoryId(categoryId);
+    }
+
+    @Override
+    public Page<Product> findAll(Integer pageNumber, Integer pageSize, String orderAttribute, String orderDirection) {
+        Sort.Direction direction = orderDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by(direction, orderAttribute));
+
+        return productRepository.findAll(pageRequest);
     }
 
 //    Sql and JPQL
