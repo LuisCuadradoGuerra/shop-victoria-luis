@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{template-bootstrap :: head('Create new product')}"></head>
+<head th:replace="~{template-admin :: head('Create new product')}"></head>
 <body>
 <form method="POST" th:object="${product}" class="p-5 text-white bg-dark">
     <ul>
@@ -64,6 +64,6 @@
 
 
 </form>
-<script th:replace="~{template-bootstrap ::scriptBootstrap}"></script>
+<script th:replace="~{template-admin ::scriptBootstrap}"></script>
 </body>
 </html>
