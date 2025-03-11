@@ -18,6 +18,8 @@
     <tr th:each="product : ${page}">
         <td th:text="${product.getProductName()}"></td>
         <td th:text="${product.getProductDescription()}"></td>
+        <td th:text="${product.getPrice()}"></td>
+        <td th:text="${product.getProductStock()}"></td>
         <td th:text="${product.getProductId()}"></td>
         <td>
             <a href="#">Edit</a>

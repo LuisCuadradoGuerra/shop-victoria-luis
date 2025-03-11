@@ -37,6 +37,8 @@ public class AdminProductController {
         Map<String, String> fields = new LinkedHashMap<>();
         fields.put("productName", "Name");
         fields.put("productDescription", "Description");
+        fields.put("price", "Price");
+        fields.put("productStock", "Stock");
         fields.put("productId", "Product Id");
         model.addAttribute("fields", fields);
         model.addAttribute("orderAttribute", orderAttribute);
