@@ -7,6 +7,21 @@
 </head>
 <body>
 
+<div th:fragment="header(actualSite, products, categories, administration)">
+    <h1>Administration: <th:block th:text="${actualSite}"></th:block></h1>
+    <ul>
+        <li th:if="${products}">
+            <a th:href="@{/admin/products}">Products</a>
+        </li>
+        <li th:if="${categories}">
+            <a th:href="@{/admin/categories}">Categories</a>
+        </li>
+        <li th:if="${administration}">
+            <a th:href="@{/admin/}">Administration</a>
+        </li>
+    </ul>
+</div>
+
 <form class="form" method="get" th:fragment="adminOrderForm(fields)">
     <fieldset class="form-group m-5 p-4">
         <legend class="m-3">View Control</legend>

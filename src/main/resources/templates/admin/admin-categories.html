@@ -2,7 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{template-bootstrap :: head('Categories')}"></head>
 <body class="bg-light m-4 p-4">
-<h1>Administration: Categories</h1>
+
+<div th:replace="~{template-bootstrap :: header('Categories', true, false, true)}"></div>
 
 <form th:replace="~{template-bootstrap :: adminOrderForm(${fields})}"></form>
 
