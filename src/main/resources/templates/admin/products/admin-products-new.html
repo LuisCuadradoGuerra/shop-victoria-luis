@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{template-admin :: head('Create new product')}"></head>
+<head th:replace="~{/admin/fragments-admin :: head('Create new product')}"></head>
 <body>
 <form method="POST" th:object="${product}" class="p-5 text-white bg-dark">
     <ul>
@@ -60,10 +60,10 @@
     </fieldset>
     <button class="btn btn-primary" type="submit">Send</button>
 
-    <!--      todo Como hacer para recoger la imagen-->
+    <!--      todo Image-->
 
 
 </form>
-<script th:replace="~{template-admin ::scriptBootstrap}"></script>
+<script th:replace="~{/admin/fragments-admin ::scriptBootstrap}"></script>
 </body>
 </html>

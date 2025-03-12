@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{admin/template-admin :: head('Products')}"></head>
+<head th:replace="~{admin/fragments-admin :: head('Products')}"></head>
 <body class="bg-light m-4 p-4">
 
-<div th:replace="~{admin/template-admin :: header('Products', false, true, true)}"></div>
+<div th:replace="~{admin/fragments-admin :: header('Products', false, true, true)}"></div>
 
-<form th:replace="~{admin/template-admin :: adminOrderForm(${fields})}"></form>
+<form th:replace="~{admin/fragments-admin :: adminOrderForm(${fields}, ${page}, ${orderAttribute}, ${orderDirection})}"></form>
 
 <table class="table table-striped table-hover table-sm table-dark mt-5">
     <thead>
@@ -29,7 +29,7 @@
     </tbody>
 </table>
 
-<div th:replace="~{admin/template-admin :: adminPagination('/admin/products', ${page}, ${orderAttribute}, ${orderDirection})}"></div>
-<script th:replace="~{admin/template-admin :: scriptBootstrap}"></script>
+<div th:replace="~{admin/fragments-admin :: adminPagination('/admin/products', ${page}, ${orderAttribute}, ${orderDirection})}"></div>
+<script th:replace="~{admin/fragments-admin :: scriptBootstrap}"></script>
 </body>
 </html>

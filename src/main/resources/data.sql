@@ -1,5 +1,5 @@
 -- Insertar categorías
-INSERT INTO category (title, category_description, category_icon) VALUES
+INSERT INTO categories (title, category_description, category_icon) VALUES
                                                                       ('Potions', 'Step into our enchanted apothecary of mystical elixirs, where each potion is meticulously brewed under the light of the full moon. Our master alchemists combine rare ingredients with ancient wisdom to create powerful concoctions that will transform your magical practice.', '/img/categories/category1.jpg'),
                                                                       ('Ingredients', 'Discover our carefully curated collection of rare and exotic ingredients, from dragon&#39;s blood to phoenix feathers. Each component is ethically sourced from the most mystical corners of the world, ensuring the highest quality for your magical crafting needs.', '/img/categories/category2.jpg'),
                                                                       ('Brooms', 'Elevate your magical transportation with our selection of enchanted brooms. Each masterfully crafted piece combines traditional craftsmanship with powerful levitation enchantments, ensuring both style and supernatural performance.', '/img/categories/category3.jpg'),

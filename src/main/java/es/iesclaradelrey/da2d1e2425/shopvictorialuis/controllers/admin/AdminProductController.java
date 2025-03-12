@@ -1,6 +1,6 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.controllers.admin;
 
-import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.AddProductDto;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.AddProductDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.CategoryService;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.ProductService;
@@ -43,30 +43,30 @@ public class AdminProductController {
         model.addAttribute("fields", fields);
         model.addAttribute("orderAttribute", orderAttribute);
         model.addAttribute("orderDirection", orderDirection);
-        return "/admin/admin-products";
+        return "/admin/products/admin-products";
     }
 
-    @GetMapping("/create-new-product")
+    @GetMapping("/new")
     public String createNewProduct(Model model) {
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
         model.addAttribute("product", new AddProductDto());
-        return "/admin/create-new-product";
+        return "/admin/products/admin-products-new";
     }
 
 
-    @PostMapping("/create-new-product")
+    @PostMapping("/new")
     public String createNewProductSubmit(@Valid @ModelAttribute("product") AddProductDto addProductDto,
                                          BindingResult bindingResult, Model model) {
         List<Category> categories = categoryService.findAll();
         System.out.println(addProductDto);
         model.addAttribute("categories", categories);
         if (bindingResult.hasErrors()) {
-            return "/admin/create-new-product";
+            return "/admin/products/admin-products-new";
         }
         System.out.println(addProductDto);
         productService.save(addProductDto);
-        return "/admin/create-new-product-ok";
+        return "/admin/products/admin-products-new-ok";
     }
 
 

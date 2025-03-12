@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head th:replace="~{template :: basicHead('Contact')}"></head>
+<head th:replace="~{fragments :: basicHead('Contact')}"></head>
 <body class="bg-gray-50 min-h-screen flex flex-col">
-<script th:replace="~{template :: appPath}"></script>
-<header th:replace="~{template :: basicHeader}"></header>
+<script th:replace="~{fragments :: appPath}"></script>
+<header th:replace="~{fragments :: basicHeader}"></header>
 
 <main class="flex-grow">
-    <div th:replace="~{template :: basicControllerTrolley}"></div>
+    <div th:replace="~{fragments :: basicControllerTrolley}"></div>
     <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-16"><h1 class="text-4xl font-display text-center mb-12">
         Contact Us</h1>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-16">
@@ -68,12 +68,12 @@
             </div>
         </div>
     </div>
-    <div th:replace="~{template :: basicTrolleyCode}"></div>
+    <div th:replace="~{fragments :: basicTrolleyCode}"></div>
 </main>
 
 
-<footer th:replace="~{template :: basicFooter}"></footer>
-<script th:replace="~{template :: basicScriptTrolley}"></script>
+<footer th:replace="~{fragments :: basicFooter}"></footer>
+<script th:replace="~{fragments :: basicScriptTrolley}"></script>
 
 
 </body>

@@ -2,12 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org"
         lang="en">
 
-<head th:replace="~{template :: basicHead('Home')}"></head>
+<head th:replace="~{fragments :: basicHead('Home')}"></head>
 
 <body class="bg-gray-50 min-h-screen flex flex-col">
-<script th:replace="~{template :: appPath}"></script>
+<script th:replace="~{fragments :: appPath}"></script>
 
-<header th:replace="~{template :: basicHeader}"></header>
+<header th:replace="~{fragments :: basicHeader}"></header>
     <main class="flex-grow">
         <div class="glide hero-slider relative h-[500px] bg-gray-900">
             <div class="glide__track" data-glide-el="track">
@@ -41,7 +41,7 @@
 <!--                th:class//append//="${categoryStat.even}? 'flex-row-reverse' : ''"         -->
                     <a th:each="category : ${categories}" th:classappend="${categoryStat.even}? 'flex-row-reverse' : ''" th:href="@{/category/{categoryId}(categoryId = ${category.getCategoryId()})}" class="flex items-center gap-8">
                         <div class="relative w-1/3 aspect-square overflow-hidden rounded-lg">
-<!--                         interpolation |/categories/category${category.getId()}.jpg|     '/categories/category'+${category.getId()}+'.jpg'-->
+<!--                         interpolation |/categories/categories${categories.getId()}.jpg|     '/categories/categories'+${categories.getId()}+'.jpg'-->
                             <img th:if="${category.getCategoryIcon()}" th:src="@{/{categoryURL}(categoryURL = ${category.getCategoryIcon()})}"
                                 class="w-full h-full object-cover transform group-hover:scale-105 transition duration-300"
                                 alt="Potions" />
@@ -94,14 +94,14 @@
 
 
 <!--		trolley			-->
-        <div th:replace="~{template :: basicTrolleyCode}"></div>
+        <div th:replace="~{fragments :: basicTrolleyCode}"></div>
 <!--		trolley			-->
 
     </main>
 
 
-<footer th:replace="~{template :: basicFooter}"></footer>
-<script th:replace="~{template :: basicScriptTrolley}"></script>
-<script th:replace="~{template :: functionalityAddToShoppingCartJs}"></script>
+<footer th:replace="~{fragments :: basicFooter}"></footer>
+<script th:replace="~{fragments :: basicScriptTrolley}"></script>
+<script th:replace="~{fragments :: functionalityAddToShoppingCartJs}"></script>
 
 

@@ -2,27 +2,27 @@
 <html xmlns:th="http://www.thymeleaf.org"
       lang="en">
 
-<head th:replace="~{template :: basicHead}"></head>
+<head th:replace="~{fragments :: basicHead}"></head>
 
 <body class="bg-gray-50 min-h-screen flex flex-col">
-<script th:replace="~{template :: appPath}"></script>
+<script th:replace="~{fragments :: appPath}"></script>
 
-<header th:replace="~{template :: basicHeader}"></header>
+<header th:replace="~{fragments :: basicHeader}"></header>
 <main class="flex-grow">
 
     <!-- Trolley code: -->
-    < <div th:replace="~{template :: basicControllerTrolley}"></div>
+    < <div th:replace="~{fragments :: basicControllerTrolley}"></div>
     <!-- Trolley code: -->
 
 
 
     <!--		trolley			-->
-    <div th:replace="~{template :: basicTrolleyCode}"></div>
+    <div th:replace="~{fragments :: basicTrolleyCode}"></div>
 
     <!--		trolley			-->
 
 </main>
 
 
-<footer th:replace="~{template :: basicFooter}"></footer>
-<script th:replace="~{template :: basicScriptTrolley}"></script>
+<footer th:replace="~{fragments :: basicFooter}"></footer>
+<script th:replace="~{fragments :: basicScriptTrolley}"></script>

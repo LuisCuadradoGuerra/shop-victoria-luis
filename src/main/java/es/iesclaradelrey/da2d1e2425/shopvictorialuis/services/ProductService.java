@@ -1,7 +1,6 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.services;
 
-import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.AddProductDto;
-import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.AddProductDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
 import org.springframework.data.domain.Page;
 

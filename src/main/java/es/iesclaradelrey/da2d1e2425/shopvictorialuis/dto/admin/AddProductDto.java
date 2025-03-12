@@ -1,10 +1,9 @@
-package es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto;
+package es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.List;
 
@@ -17,7 +16,7 @@ public class AddProductDto {
     private String productName;
     private String productDescription;
     @NotNull
-    @NotEmpty(message = "Your product need at least one category")
+    @NotEmpty(message = "Your product need at least one categories")
     private List<Long> productCategoriesIds;
     @NotNull(message = "The product need a stock")
     @Positive(message = "If there is no stock, don't put it on sale")

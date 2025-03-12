@@ -1,6 +1,8 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.util.Set;
 
@@ -9,7 +11,7 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="category")
+@Table(name="categories")
 public class Category  {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +21,7 @@ public class Category  {
     private String title;
     @Column(nullable = false, length = 1000)
     private String categoryDescription;
-    @Column(nullable = false, length = 300)
+    @Column(length = 300)
     private String categoryIcon;
 
     @ManyToMany(mappedBy = "categories", fetch = FetchType.EAGER) //MappedBy: Not the proprietary of the relation
@@ -29,5 +31,10 @@ public class Category  {
         this.title = title;
         this.categoryDescription = s;
         this.categoryIcon = s1;
+    }
+
+    public Category( String title, String categoryDescription) {
+        this.title = title;
+        this.categoryDescription = categoryDescription;
     }
 }

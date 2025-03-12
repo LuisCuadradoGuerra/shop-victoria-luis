@@ -1,5 +1,6 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.services;
 
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.AddCategoryDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
 import org.springframework.data.domain.Page;
 
@@ -11,6 +12,7 @@ public interface CategoryService {
     Category save(Category category);
     List<Category> findAll();
     Optional<Category> findById(Long id);
-
     Page<Category> findAll(Integer pageNumber, Integer pageSize, String orderAttribute, String orderDirection);
+
+    void save(AddCategoryDto addCategoryDto);
 }

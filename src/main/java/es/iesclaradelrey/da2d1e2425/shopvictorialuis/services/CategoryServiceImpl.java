@@ -1,5 +1,6 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.services;
 
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.AddCategoryDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.CategoryRepository;
 import org.springframework.data.domain.Page;
@@ -44,5 +45,11 @@ public class CategoryServiceImpl implements CategoryService {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by(direction, orderAttribute));
 
        return categoryRepository.findAll(pageRequest);
+    }
+
+    @Override
+    public void save(AddCategoryDto addCategoryDto) {
+        Category category = new Category(addCategoryDto.getTitle(),addCategoryDto.getCategoryDescription());
+        categoryRepository.save(category);
     }
 }
