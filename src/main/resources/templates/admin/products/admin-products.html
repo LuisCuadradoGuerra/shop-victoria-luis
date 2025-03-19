@@ -22,8 +22,8 @@
         <td th:text="${product.getProductStock()}"></td>
         <td th:text="${product.getProductId()}"></td>
         <td>
-            <a href="#">Edit</a>
-            <a href="#">Delete</a>
+            <a th:href="@{'/admin/products/update/' + ${product.getProductId()}}">Edit</a>
+            <a th:href="@{'/admin/products/delete/' + ${product.getProductId()}}">Delete</a>
         </td>
     </tr>
     </tbody>

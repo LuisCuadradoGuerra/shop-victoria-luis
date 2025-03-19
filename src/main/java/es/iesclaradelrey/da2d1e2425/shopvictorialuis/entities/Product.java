@@ -1,6 +1,8 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import java.util.HashSet;
 import java.util.List;
@@ -127,4 +129,6 @@ public class Product  {
     public void setShoppingCartItems(List<ShoppingCartItem> shoppingCartItems) {
         this.shoppingCartItems = shoppingCartItems;
     }
+
+
 }

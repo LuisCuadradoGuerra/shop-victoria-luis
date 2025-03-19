@@ -27,7 +27,7 @@ public class ProductController extends BasicController{
     @GetMapping("/product/{id}")
     public ModelAndView products(@PathVariable(name = "id") Long productId) {
         ModelAndView mav = new ModelAndView();
-        Optional<Product> product = productService.findByProductId(productId);
+        Optional<Product> product = productService.findById(productId);
 
         if (product.isPresent()) {
             mav.addObject("product", product.orElseThrow());

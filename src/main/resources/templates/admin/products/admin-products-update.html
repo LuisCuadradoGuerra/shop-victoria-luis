@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/admin/fragments-admin :: head('Update product')}"></head>
+<body>
+<form method="post" th:object="${updateProductDto}" class="p-5 text-white bg-dark">
+
+    <div th:replace="~{/admin/fragments-admin :: header('Products Update → ' + ${updateProductDto.getProductName()}, true, false, false)}"></div>
+
+    <ul>
+        <li th:each="error : ${#fields.errors()}" th:text="${error}"></li>
+    </ul>
+
+    <div class="form-group mb-3 mx-auto w-50">
+        <label for="productName">Name</label>
+        <input type="text" class="form-control" id="productName" th:field="*{productName}" th:errorclass="is-invalid"/>
+
+        <div th:if="${#fields.hasErrors('productName')}" th:text="${#fields.errors('productName')}"
+             class="invalid-feedback">
+            Error
+        </div>
+    </div>
+
+    <div class="form-group mb-3 mx-auto w-50">
+        <label for="productDescription">Product Description</label>
+        <input type="text" class="form-control" id="productDescription" th:field="*{productDescription}"
+               th:errorclass="is-invalid"/>
+        <div th:if="${#fields.hasErrors('productDescription')}" th:text="${#fields.errors('productDescription')}"
+             class="invalid-feedback">
+            Error
+        </div>
+    </div>
+
+    <div class="form-group mb-3 mx-auto w-50">
+        <label for="productPrice">Product Price</label>
+        <input th:type="number" class="form-control" id="productPrice" th:field="*{productPrice}"
+               th:errorclass="is-invalid"/>
+        <div th:if="${#fields.hasErrors('productPrice')}" th:text="${#fields.errors('productPrice')}"
+             class="invalid-feedback">
+            Error
+        </div>
+    </div>
+
+    <div class="form-group mb-3 mx-auto w-50">
+        <label for="productStock">Product Stock</label>
+        <input th:type="number" class="form-control" id="productStock" th:field="*{productStock}"
+               th:errorclass="is-invalid"/>
+        <div th:if="${#fields.hasErrors('productStock')}" th:text="${#fields.errors('productStock')}"
+             class="invalid-feedback">
+            Error
+        </div>
+    </div>
+
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4">Product Categories</legend>
+        <div th:each="category : ${categories}" class="form-check mx-auto w-50">
+
+            <label class="form-check-label" th:for="${category.getTitle()}" th:text="${category.getTitle()}">
+            </label>
+            <input class="form-check-input" type="checkbox" th:id="${category.getTitle()}"
+                   th:value="${category.getCategoryId()}" th:field="*{productCategoriesIds}"
+                   th:errorclass="is-invalid" th:selected="${updateProductDto.productCategoriesIds.contains(category.getCategoryId())}"/>
+        </div>
+        <div th:if="${#fields.hasErrors('productCategoriesIds')}" th:text="${#fields.errors('productCategoriesIds')}"
+             class="invalid-feedback">
+            Error
+        </div>
+    </fieldset>
+    <input type="hidden" th:field="*{productId}"/>
+
+    <button class="btn btn-primary" type="submit">Send</button>
+
+
+</form>
+<script th:replace="~{/admin/fragments-admin ::scriptBootstrap}"></script>
+</body>
+</html>

@@ -1,7 +1,9 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.services;
 
-import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.AddCategoryDto;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.NewCategoryDto;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.UpdateCategoryDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.CategoryNotFoundException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.CategoryRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -48,8 +50,27 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public void save(AddCategoryDto addCategoryDto) {
+    public void save(NewCategoryDto addCategoryDto) {
         Category category = new Category(addCategoryDto.getTitle(),addCategoryDto.getCategoryDescription());
         categoryRepository.save(category);
+    }
+
+    @Override
+    public void update(UpdateCategoryDto updateCategoryDto, Long categoryId) {
+        Category existingCategory = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
+
+        existingCategory.setTitle(updateCategoryDto.getTitle());
+        existingCategory.setCategoryDescription(updateCategoryDto.getCategoryDescription());
+
+        categoryRepository.save(existingCategory);
+    }
+
+    @Override
+    public void delete(Long categoryId) {
+        Category category = categoryRepository.findById(categoryId)
+                .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
+        //todo: global error → CantDeleteCategoryWithProductsException or something like that
+        categoryRepository.delete(category);
     }
 }

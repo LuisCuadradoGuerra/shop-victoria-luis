@@ -7,6 +7,7 @@
 
 <form th:replace="~{admin/fragments-admin :: adminOrderForm(${fields}, ${page}, ${orderAttribute}, ${orderDirection})}"></form>
 
+<a th:href="@{/admin/categories/new}">New</a>
 <table class="table table-striped table-hover table-sm table-dark mt-5">
     <thead>
     <tr>
@@ -20,12 +21,13 @@
         <td th:text="${category.getCategoryDescription()}"></td>
         <td th:text="${category.getCategoryId()}"></td>
         <td>
-            <a href="#">Edit</a>
-            <a href="#">Delete</a>
+            <a th:href="@{'/admin/categories/update/' + ${category.getCategoryId()}}">Edit</a>
+            <a th:href="@{'/admin/categories/delete/' + ${category.getCategoryId()}}">Delete</a>
         </td>
     </tr>
     </tbody>
 </table>
+<a th:href="@{/admin/categories/new}">New</a>
 
 <div th:replace="~{admin/fragments-admin :: adminPagination('/admin/categories', ${page}, ${orderAttribute}, ${orderDirection})}"></div>
 <script th:replace="~{admin/fragments-admin :: scriptBootstrap}"></script>

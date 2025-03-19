@@ -1,6 +1,9 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.controllers.admin;
 
-import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.AddCategoryDto;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.NewCategoryDto;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.UpdateCategoryDto;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.CategoryNotFoundException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -40,12 +43,12 @@ public class AdminCategoryController {
 
     @GetMapping("/new")
     public String createNewCategory(Model model) {
-        model.addAttribute("category", new AddCategoryDto());
+        model.addAttribute("category", new NewCategoryDto());
         return "/admin/categories/admin-categories-new";
     }
 
     @PostMapping("/new")
-    public String createNewCategory(@Valid @ModelAttribute("category") AddCategoryDto addCategoryDto,
+    public String createNewCategory(@Valid @ModelAttribute("category") NewCategoryDto addCategoryDto,
                                     BindingResult bindingResult, Model model) {
         System.out.println(addCategoryDto);
         if (bindingResult.hasErrors()) {
@@ -56,5 +59,37 @@ public class AdminCategoryController {
         return "/admin/categories/admin-categories-new-ok";
     }
 
+    @GetMapping("/update/{categoryId}")
+    public String updateCategoryForm(@PathVariable(name = "categoryId") Long categoryId,
+                                     Model model) {
+        Category category = categoryService.findById(categoryId).orElseThrow(() -> new RuntimeException("Category not found"));
+        UpdateCategoryDto updateCategoryDto = new UpdateCategoryDto(category.getTitle(), category.getCategoryDescription());
+        model.addAttribute("updateCategoryDto", updateCategoryDto);
+        return "/admin/categories/admin-categories-update";
+    }
 
+    @PostMapping("/update/{categoryId}")
+    public String updateCategorySubmit(@Valid @ModelAttribute("updateCategoryDto") UpdateCategoryDto updateCategoryDto,
+                                       @PathVariable(name = "categoryId") Long categoryId,
+                                       BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "/admin/categories/admin-categories-update";
+        }
+        categoryService.update(updateCategoryDto, categoryId);
+        return "/admin/categories/admin-categories-update-ok";
+    }
+
+    @GetMapping("/delete/{categoryId}")
+    public String deleteCategoryForm(@PathVariable(name = "categoryId") Long categoryId,
+                                     Model model) {
+        Category category = categoryService.findById(categoryId).orElseThrow(() -> new CategoryNotFoundException("Category not found"));
+        model.addAttribute("category", category);
+        return "/admin/categories/admin-categories-delete";
+    }
+
+    @PostMapping("/delete/{categoryId}")
+    public String deleteCategorySubmit(@PathVariable(name = "categoryId") Long categoryId) {
+        categoryService.delete(categoryId);
+        return "/admin/categories/admin-categories-delete-ok";
+    }
 }

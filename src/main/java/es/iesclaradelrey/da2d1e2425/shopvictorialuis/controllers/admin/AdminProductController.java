@@ -1,7 +1,10 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.controllers.admin;
 
-import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.AddProductDto;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.NewProductDto;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.UpdateProductDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.ProductNotFoundException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.CategoryService;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.ProductService;
 import jakarta.validation.Valid;
@@ -10,9 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin/products")
@@ -47,17 +48,16 @@ public class AdminProductController {
     }
 
     @GetMapping("/new")
-    public String createNewProduct(Model model) {
+    public String createProductForm(Model model) {
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
-        model.addAttribute("product", new AddProductDto());
+        model.addAttribute("product", new NewProductDto());
         return "/admin/products/admin-products-new";
     }
 
-
     @PostMapping("/new")
-    public String createNewProductSubmit(@Valid @ModelAttribute("product") AddProductDto addProductDto,
-                                         BindingResult bindingResult, Model model) {
+    public String createProductSubmit(@Valid @ModelAttribute("product") NewProductDto addProductDto,
+                                      BindingResult bindingResult, Model model) {
         List<Category> categories = categoryService.findAll();
         System.out.println(addProductDto);
         model.addAttribute("categories", categories);
@@ -69,5 +69,50 @@ public class AdminProductController {
         return "/admin/products/admin-products-new-ok";
     }
 
+    @GetMapping("/update/{productId}")
+    public String updateProductForm(@PathVariable(name = "productId") Long productId,
+                                    Model model) {
+        Product product = productService.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
+        UpdateProductDto updateProductDto = new UpdateProductDto(
+                product.getProductName(),
+                product.getProductDescription(),
+                product.getProductStock(),
+                product.getPrice(),
+                product.getCategories()
+                        .stream()
+                        .map(Category::getCategoryId)
+                        .toList());
+        List<Category> categories = categoryService.findAll();
+        model.addAttribute("categories", categories);
+        model.addAttribute("updateProductDto", updateProductDto);
+        return "/admin/products/admin-products-update";
 
+    }
+
+    @PostMapping("/update/{productId}")
+    public String updateProductSubmit(@ModelAttribute("product") UpdateProductDto updateProductDto,
+                                      @PathVariable(name = "productId") Long productId,
+                                      BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "/admin/products/admin-products-update";
+        }
+        productService.update(updateProductDto, productId);
+        return "/admin/products/admin-products-update-ok";
+    }
+
+    @GetMapping("/delete/{productId}")
+    public String deleteProductForm(@PathVariable(name = "productId") Long productId,
+                                    Model model) {
+        Product product = productService.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
+        model.addAttribute("product", product);
+        return "/admin/products/admin-products-delete";
+    }
+
+    @PostMapping("/delete/{productId}")
+    public String deleteProductSubmit(@PathVariable(name = "productId") Long productId,
+                                      Model model){
+        productService.delete(productId);
+        return "/admin/products/admin-products-delete-ok";
+    }
 }
