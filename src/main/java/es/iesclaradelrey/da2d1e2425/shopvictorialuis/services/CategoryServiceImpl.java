@@ -3,6 +3,7 @@ package es.iesclaradelrey.da2d1e2425.shopvictorialuis.services;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.NewCategoryDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.UpdateCategoryDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.CantDeleteCategoryWithProductsException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.CategoryNotFoundException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.CategoryRepository;
 import org.springframework.data.domain.Page;
@@ -70,6 +71,9 @@ public class CategoryServiceImpl implements CategoryService {
     public void delete(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
+        if(!category.getProducts().isEmpty()){
+           throw new CantDeleteCategoryWithProductsException("You cant delete a category with products");
+        }
         //todo: global error → CantDeleteCategoryWithProductsException or something like that
         categoryRepository.delete(category);
     }

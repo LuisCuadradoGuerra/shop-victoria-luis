@@ -3,6 +3,7 @@ package es.iesclaradelrey.da2d1e2425.shopvictorialuis.controllers.admin;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.NewCategoryDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.UpdateCategoryDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.CantDeleteCategoryWithProductsException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.CategoryNotFoundException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.CategoryService;
 import jakarta.validation.Valid;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -49,14 +51,16 @@ public class AdminCategoryController {
 
     @PostMapping("/new")
     public String createNewCategory(@Valid @ModelAttribute("category") NewCategoryDto addCategoryDto,
-                                    BindingResult bindingResult, Model model) {
-        System.out.println(addCategoryDto);
+                                    BindingResult bindingResult,
+                                    RedirectAttributes redirectAttributes,
+                                    Model model) {
         if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("validationError", "An error occurred with the validation rule");
             return "/admin/categories/admin-categories-new";
         }
-        System.out.println(addCategoryDto);
         categoryService.save(addCategoryDto);
-        return "/admin/categories/admin-categories-new-ok";
+        redirectAttributes.addFlashAttribute("successNew", "Category created");
+        return "redirect:/admin/categories";
     }
 
     @GetMapping("/update/{categoryId}")
@@ -71,12 +75,22 @@ public class AdminCategoryController {
     @PostMapping("/update/{categoryId}")
     public String updateCategorySubmit(@Valid @ModelAttribute("updateCategoryDto") UpdateCategoryDto updateCategoryDto,
                                        @PathVariable(name = "categoryId") Long categoryId,
+                                       RedirectAttributes redirectAttributes,
                                        BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "/admin/categories/admin-categories-update";
+//            redirectAttributes.addFlashAttribute("validationError", "An error occurred with the validation rule");
+            //todo: redirect to form
+            return "redirect:/admin/categories/update/" + categoryId;
         }
-        categoryService.update(updateCategoryDto, categoryId);
-        return "/admin/categories/admin-categories-update-ok";
+        try{
+            categoryService.update(updateCategoryDto, categoryId);
+            redirectAttributes.addFlashAttribute("successUpdate", "Category Updated");
+        }catch (Exception e) {
+            redirectAttributes.addFlashAttribute("unexpectedError", "An unexpected error occurred");
+        }
+
+
+        return "redirect:/admin/categories";
     }
 
     @GetMapping("/delete/{categoryId}")
@@ -88,8 +102,16 @@ public class AdminCategoryController {
     }
 
     @PostMapping("/delete/{categoryId}")
-    public String deleteCategorySubmit(@PathVariable(name = "categoryId") Long categoryId) {
-        categoryService.delete(categoryId);
-        return "/admin/categories/admin-categories-delete-ok";
+    public String deleteCategorySubmit(@PathVariable(name = "categoryId") Long categoryId,
+                                       RedirectAttributes redirectAttributes) {
+        try {
+            categoryService.delete(categoryId);
+            redirectAttributes.addFlashAttribute("successDelete", "The category with id " + categoryId + " has been deleted");
+        } catch (CantDeleteCategoryWithProductsException e) {
+            redirectAttributes.addFlashAttribute("cascadeError", "You cant delete a category with products");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("unexpectedError", "An unexpected error occurred");
+        }
+        return "redirect:/admin/categories";
     }
 }

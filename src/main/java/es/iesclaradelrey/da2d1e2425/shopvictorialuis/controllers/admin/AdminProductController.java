@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.*;
 
@@ -57,16 +58,18 @@ public class AdminProductController {
 
     @PostMapping("/new")
     public String createProductSubmit(@Valid @ModelAttribute("product") NewProductDto addProductDto,
-                                      BindingResult bindingResult, Model model) {
+                                      BindingResult bindingResult,
+                                      RedirectAttributes redirectAttributes,
+                                      Model model) {
         List<Category> categories = categoryService.findAll();
-        System.out.println(addProductDto);
         model.addAttribute("categories", categories);
         if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("validationError", "An error occurred with the validation rule");
             return "/admin/products/admin-products-new";
         }
-        System.out.println(addProductDto);
         productService.save(addProductDto);
-        return "/admin/products/admin-products-new-ok";
+        redirectAttributes.addFlashAttribute("successNew", "Product created");
+        return "redirect:/admin/products";
     }
 
     @GetMapping("/update/{productId}")
@@ -92,12 +95,15 @@ public class AdminProductController {
     @PostMapping("/update/{productId}")
     public String updateProductSubmit(@ModelAttribute("product") UpdateProductDto updateProductDto,
                                       @PathVariable(name = "productId") Long productId,
+                                      RedirectAttributes redirectAttributes,
                                       BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
+            redirectAttributes.addFlashAttribute("validationError", "An error occurred with the validations rules");
             return "/admin/products/admin-products-update";
         }
         productService.update(updateProductDto, productId);
-        return "/admin/products/admin-products-update-ok";
+        redirectAttributes.addFlashAttribute("successUpdate", "Product Updated");
+        return "redirect:/admin/products";
     }
 
     @GetMapping("/delete/{productId}")
@@ -111,8 +117,17 @@ public class AdminProductController {
 
     @PostMapping("/delete/{productId}")
     public String deleteProductSubmit(@PathVariable(name = "productId") Long productId,
-                                      Model model){
-        productService.delete(productId);
-        return "/admin/products/admin-products-delete-ok";
+                                      RedirectAttributes redirectAttributes,
+                                      Model model) {
+        try {
+            productService.delete(productId);
+            redirectAttributes.addFlashAttribute("successDelete", "Product Deleted");
+        } catch (ProductNotFoundException e) {
+            redirectAttributes.addFlashAttribute("errorIdProduct", "Product Not Found");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("unexpectedError", "An unexpected error occurred");
+        }
+
+        return "redirect:/admin/products";
     }
 }

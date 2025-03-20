@@ -6,6 +6,7 @@ import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.ProductNotFoundException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.CategoryRepository;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.FeedbackRepository;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.ProductRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,10 +23,12 @@ import java.util.Set;
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final FeedbackRepository feedbackRepository;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, FeedbackRepository feedbackRepository) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
+        this.feedbackRepository = feedbackRepository;
     }
 
     @Override
@@ -109,7 +112,7 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Long productId) {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Producto no encontrado"));
-        //todo: delete feedbacks related with the product
+        feedbackRepository.deleteAll(product.getFeedbacks());
         productRepository.delete(product);
     }
 
