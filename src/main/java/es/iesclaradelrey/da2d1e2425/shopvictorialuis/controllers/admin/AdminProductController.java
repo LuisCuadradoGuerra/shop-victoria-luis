@@ -93,16 +93,22 @@ public class AdminProductController {
     }
 
     @PostMapping("/update/{productId}")
-    public String updateProductSubmit(@ModelAttribute("product") UpdateProductDto updateProductDto,
-                                      @PathVariable(name = "productId") Long productId,
+    public String updateProductSubmit(@Valid @ModelAttribute("product") UpdateProductDto updateProductDto,
+                                      BindingResult bindingResult,
                                       RedirectAttributes redirectAttributes,
-                                      BindingResult bindingResult, Model model) {
+                                      @PathVariable(name = "productId") Long productId,
+                                      Model model) {
+//        todo error update products
         if (bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("validationError", "An error occurred with the validations rules");
+//            redirectAttributes.addFlashAttribute("validationError", "An error occurred with the validations rules");
             return "/admin/products/admin-products-update";
         }
-        productService.update(updateProductDto, productId);
-        redirectAttributes.addFlashAttribute("successUpdate", "Product Updated");
+        try {
+            productService.update(updateProductDto, productId);
+            redirectAttributes.addFlashAttribute("successUpdate", "Product Updated");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("unexpectedError", "An unexpected error occurred");
+        }
         return "redirect:/admin/products";
     }
 

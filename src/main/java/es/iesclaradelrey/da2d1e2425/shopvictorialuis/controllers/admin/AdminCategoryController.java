@@ -74,13 +74,12 @@ public class AdminCategoryController {
 
     @PostMapping("/update/{categoryId}")
     public String updateCategorySubmit(@Valid @ModelAttribute("updateCategoryDto") UpdateCategoryDto updateCategoryDto,
+                                       BindingResult bindingResult,
                                        @PathVariable(name = "categoryId") Long categoryId,
                                        RedirectAttributes redirectAttributes,
-                                       BindingResult bindingResult, Model model) {
+                                       Model model) {
         if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("validationError", "An error occurred with the validation rule");
-            //todo: redirect to form
-            return "redirect:/admin/categories/update/" + categoryId;
+            return "/admin/categories/admin-categories-update";
         }
         try{
             categoryService.update(updateCategoryDto, categoryId);

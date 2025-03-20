@@ -17,7 +17,8 @@ public class UpdateProductDto {
     @NotNull
     @NotBlank(message = "Product Name can't be blank")
     private String productName;
-    private Long productId;
+    @NotNull
+    @NotEmpty(message = "Your product need a description")
     private String productDescription;
     @NotNull
     @NotEmpty(message = "Your product need at least one categories")
