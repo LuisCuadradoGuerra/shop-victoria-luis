@@ -4,6 +4,7 @@ import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.NewProductDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.UpdateProductDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.NameProductAllReadyExistException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.ProductNotFoundException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.CategoryRepository;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.FeedbackRepository;
@@ -69,17 +70,17 @@ public class ProductServiceImpl implements ProductService {
 //    Sql and JPQL
 
     @Override
-    public Long countProductsByCategoryId(Long categoryId){
+    public Long countProductsByCategoryId(Long categoryId) {
         return productRepository.countProductsByCategoryId(categoryId);
     }
 
     @Override
-    public Long countProductsByCategoryIdJPQL(Long categoryId){
+    public Long countProductsByCategoryIdJPQL(Long categoryId) {
         return productRepository.countProductsByCategoryId(categoryId);
     }
 
     @Override
-    public Optional<Double> averageRatingByProductId(Long productId){
+    public Optional<Double> averageRatingByProductId(Long productId) {
         return productRepository.averageRatingByProductId(productId);
     }
 
@@ -94,17 +95,22 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void update(UpdateProductDto updateProductDto, Long productId) {
         Product existingProduct = productRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Producto no encontrado"));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
-        existingProduct.setProductName(updateProductDto.getProductName());
-        existingProduct.setProductDescription(updateProductDto.getProductDescription());
-        existingProduct.setPrice(updateProductDto.getProductPrice());
-        existingProduct.setProductStock(updateProductDto.getProductStock());
+        if (!productRepository.findAll().stream().anyMatch(product -> product.getProductName().equals(updateProductDto.getProductName())) || existingProduct.getProductName().equals(updateProductDto.getProductName())) {
 
-        Set<Category> categories = new HashSet<>(categoryRepository.findAllById(updateProductDto.getProductCategoriesIds()));
-        existingProduct.setCategories(categories);
+            existingProduct.setProductName(updateProductDto.getProductName());
+            existingProduct.setProductDescription(updateProductDto.getProductDescription());
+            existingProduct.setPrice(updateProductDto.getProductPrice());
+            existingProduct.setProductStock(updateProductDto.getProductStock());
 
-        productRepository.save(existingProduct);
+            Set<Category> categories = new HashSet<>(categoryRepository.findAllById(updateProductDto.getProductCategoriesIds()));
+            existingProduct.setCategories(categories);
+
+            productRepository.save(existingProduct);
+        }
+
+        throw new NameProductAllReadyExistException("This product name is already in use");
     }
 
     @Override

@@ -4,6 +4,7 @@ import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.NewProductDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.UpdateProductDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.NameProductAllReadyExistException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.ProductNotFoundException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.CategoryService;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.ProductService;
@@ -93,19 +94,21 @@ public class AdminProductController {
     }
 
     @PostMapping("/update/{productId}")
-    public String updateProductSubmit(@Valid @ModelAttribute("product") UpdateProductDto updateProductDto,
+    public String updateProductSubmit(@Valid @ModelAttribute("updateProductDto") UpdateProductDto updateProductDto,
                                       BindingResult bindingResult,
-                                      RedirectAttributes redirectAttributes,
                                       @PathVariable(name = "productId") Long productId,
+                                      RedirectAttributes redirectAttributes,
                                       Model model) {
-//        todo error update products
         if (bindingResult.hasErrors()) {
-//            redirectAttributes.addFlashAttribute("validationError", "An error occurred with the validations rules");
+            model.addAttribute("categories", categoryService.findAll());
             return "/admin/products/admin-products-update";
         }
         try {
             productService.update(updateProductDto, productId);
             redirectAttributes.addFlashAttribute("successUpdate", "Product Updated");
+        } catch (NameProductAllReadyExistException e) {
+            bindingResult.rejectValue("productName", null, e.getMessage());
+            return "/admin/products/admin-products-update";
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("unexpectedError", "An unexpected error occurred");
         }

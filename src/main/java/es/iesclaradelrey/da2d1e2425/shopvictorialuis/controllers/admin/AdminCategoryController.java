@@ -5,6 +5,7 @@ import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.UpdateCategoryDto
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.CantDeleteCategoryWithProductsException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.CategoryNotFoundException;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.NameCategoryAllReadyExistException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -84,6 +85,9 @@ public class AdminCategoryController {
         try{
             categoryService.update(updateCategoryDto, categoryId);
             redirectAttributes.addFlashAttribute("successUpdate", "Category Updated");
+        }catch (NameCategoryAllReadyExistException e) {
+            bindingResult.rejectValue("title", null, e.getMessage());
+            return "/admin/categories/admin-categories-update";
         }catch (Exception e) {
             redirectAttributes.addFlashAttribute("unexpectedError", "An unexpected error occurred");
         }

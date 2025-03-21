@@ -14,6 +14,7 @@ import java.util.List;
 @Setter
 @ToString
 public class UpdateProductDto {
+
     @NotNull
     @NotBlank(message = "Product Name can't be blank")
     private String productName;
