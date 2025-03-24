@@ -4,4 +4,7 @@ import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
+    Boolean existsByTitle(String title);
+
+    Boolean existsByTitleAndCategoryIdIsNot(String title, Long categoryId);
 }

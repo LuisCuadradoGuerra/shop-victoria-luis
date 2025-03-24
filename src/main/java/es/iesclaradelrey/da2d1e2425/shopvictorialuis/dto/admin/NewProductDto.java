@@ -14,7 +14,8 @@ public class NewProductDto {
     @NotNull
     @NotBlank(message = "Product Name can't be blank")
     private String productName;
-    private Long productId;
+    @NotNull
+    @NotBlank(message = "Product Description can't be blank")
     private String productDescription;
     @NotNull
     @NotEmpty(message = "Your product need at least one categories")
@@ -25,7 +26,6 @@ public class NewProductDto {
     @NotNull(message = "The product need price")
     @Positive(message = "Do you want earn money, right?")
     private Double productPrice;
-//    private String productImage;
 
 //    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)   FECHAS, no para fecha y hora
 //    @DateTimeFormat(pattern = "HH:mm")
@@ -33,6 +33,4 @@ public class NewProductDto {
 //    @Email
 //    @Past  para coger fechas del pasado
 
-
-//    nulls, product(), model.addAtribute
 }

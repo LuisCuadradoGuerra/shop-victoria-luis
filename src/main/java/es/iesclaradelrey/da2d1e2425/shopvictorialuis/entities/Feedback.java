@@ -27,7 +27,7 @@ public class Feedback {
     @Column(nullable = false)
     private LocalDateTime date = LocalDateTime.now();
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
         @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 }

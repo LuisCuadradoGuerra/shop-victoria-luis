@@ -4,6 +4,9 @@
 <body>
 
 <form method="POST" th:object="${category}" class="p-5 text-white bg-dark">
+
+    <div th:replace="~{/admin/fragments-admin :: header('New Category', false, true, true)}"></div>
+
     <ul>
         <li th:each="error : ${#fields.errors()}" th:text="${error}"></li>
     </ul>
@@ -43,8 +46,6 @@
 <!--        </div>-->
 <!--    </fieldset>-->
     <button class="btn btn-primary" type="submit">Send</button>
-
-    <!--      todo Image-->
 
 
 </form>

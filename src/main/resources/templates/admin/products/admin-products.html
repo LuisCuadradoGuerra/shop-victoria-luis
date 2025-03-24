@@ -4,17 +4,16 @@
 <body class="bg-light m-4 p-4">
 
 <div th:replace="~{admin/fragments-admin :: header('Products', false, true, true)}"></div>
+
 <div th:if="${errorIdProduct}" class="alert alert-danger" role="alert">
     <p th:text="${errorIdProduct}"></p>
 </div>
-
 <div th:if="${unexpectedError}" class="alert alert-danger" role="alert">
     <p th:text="${unexpectedError}"></p>
 </div>
 <div th:if="${validationError}" class="alert alert-danger" role="alert">
     <p th:text="${validationError}"></p>
 </div>
-
 <div th:if="${successDelete}" class="alert alert-success" role="alert">
     <p th:text="${successDelete}"></p>
 </div>

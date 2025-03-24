@@ -59,8 +59,15 @@ public class AdminCategoryController {
             redirectAttributes.addFlashAttribute("validationError", "An error occurred with the validation rule");
             return "/admin/categories/admin-categories-new";
         }
-        categoryService.save(addCategoryDto);
-        redirectAttributes.addFlashAttribute("successNew", "Category created");
+        try {
+            categoryService.save(addCategoryDto);
+            redirectAttributes.addFlashAttribute("successNew", "Category created");
+        } catch (NameCategoryAllReadyExistException e) {
+            bindingResult.rejectValue("title", null, e.getMessage());
+            return "/admin/categories/admin-categories-new";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("unexpectedError", "An unexpected error occurred");
+        }
         return "redirect:/admin/categories";
     }
 
@@ -82,13 +89,13 @@ public class AdminCategoryController {
         if (bindingResult.hasErrors()) {
             return "/admin/categories/admin-categories-update";
         }
-        try{
+        try {
             categoryService.update(updateCategoryDto, categoryId);
             redirectAttributes.addFlashAttribute("successUpdate", "Category Updated");
-        }catch (NameCategoryAllReadyExistException e) {
+        } catch (NameCategoryAllReadyExistException e) {
             bindingResult.rejectValue("title", null, e.getMessage());
             return "/admin/categories/admin-categories-update";
-        }catch (Exception e) {
+        } catch (Exception e) {
             redirectAttributes.addFlashAttribute("unexpectedError", "An unexpected error occurred");
         }
 
@@ -111,7 +118,8 @@ public class AdminCategoryController {
             categoryService.delete(categoryId);
             redirectAttributes.addFlashAttribute("successDelete", "The category with id " + categoryId + " has been deleted");
         } catch (CantDeleteCategoryWithProductsException e) {
-            redirectAttributes.addFlashAttribute("cascadeError", "You cant delete a category with products");
+            System.out.println("Deleted Category with id " + categoryId);
+            redirectAttributes.addFlashAttribute("cascadeError", e.getMessage());
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("unexpectedError", "An unexpected error occurred");
         }

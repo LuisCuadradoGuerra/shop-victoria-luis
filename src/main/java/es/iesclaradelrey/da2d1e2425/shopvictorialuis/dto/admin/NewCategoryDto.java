@@ -14,7 +14,6 @@ public class NewCategoryDto {
     @NotNull
     @NotBlank(message = "Category title can't be blank")
     private String title;
-    private Long categoryId;
     @NotNull
     @NotBlank(message = "The category needs a description")
     private String categoryDescription;

@@ -68,14 +68,20 @@ public class AdminProductController {
             redirectAttributes.addFlashAttribute("validationError", "An error occurred with the validation rule");
             return "/admin/products/admin-products-new";
         }
-        productService.save(addProductDto);
-        redirectAttributes.addFlashAttribute("successNew", "Product created");
+        try {
+            productService.save(addProductDto);
+            redirectAttributes.addFlashAttribute("successNew", "Product created");
+        } catch (NameProductAllReadyExistException e) {
+            bindingResult.rejectValue("productName", null, e.getMessage());
+            return "/admin/products/admin-products-new";
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("unexpectedError", "An unexpected error occurred");
+        }
         return "redirect:/admin/products";
     }
 
     @GetMapping("/update/{productId}")
-    public String updateProductForm(@PathVariable(name = "productId") Long productId,
-                                    Model model) {
+    public String updateProductForm(@PathVariable(name = "productId") Long productId, Model model) {
         Product product = productService.findById(productId).orElseThrow(() -> new ProductNotFoundException("Product Not Found"));
         UpdateProductDto updateProductDto = new UpdateProductDto(
                 product.getProductName(),
@@ -99,20 +105,21 @@ public class AdminProductController {
                                       @PathVariable(name = "productId") Long productId,
                                       RedirectAttributes redirectAttributes,
                                       Model model) {
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("categories", categoryService.findAll());
-            return "/admin/products/admin-products-update";
+        model.addAttribute("categories", categoryService.findAll());
+
+        if (!bindingResult.hasErrors()) {
+            try {
+                productService.update(updateProductDto, productId);
+                redirectAttributes.addFlashAttribute("successUpdate", "Product Updated");
+                System.out.println("Product Updated - redirecting to admin");
+                return "redirect:/admin/products";
+            } catch (NameProductAllReadyExistException e) {
+                bindingResult.rejectValue("productName", null, e.getMessage());
+            } catch (Exception e) {
+                bindingResult.reject(null, e.getMessage());
+            }
         }
-        try {
-            productService.update(updateProductDto, productId);
-            redirectAttributes.addFlashAttribute("successUpdate", "Product Updated");
-        } catch (NameProductAllReadyExistException e) {
-            bindingResult.rejectValue("productName", null, e.getMessage());
-            return "/admin/products/admin-products-update";
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("unexpectedError", "An unexpected error occurred");
-        }
-        return "redirect:/admin/products";
+        return "/admin/products/admin-products-update";
     }
 
     @GetMapping("/delete/{productId}")

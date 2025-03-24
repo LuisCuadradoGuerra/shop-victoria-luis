@@ -3,6 +3,9 @@
 <head th:replace="~{/admin/fragments-admin :: head('Create new product')}"></head>
 <body>
 <form method="POST" th:object="${product}" class="p-5 text-white bg-dark">
+
+    <div th:replace="~{/admin/fragments-admin :: header('New Product', true, false, true)}"></div>
+
     <ul>
         <li th:each="error : ${#fields.errors()}" th:text="${error}"></li>
     </ul>

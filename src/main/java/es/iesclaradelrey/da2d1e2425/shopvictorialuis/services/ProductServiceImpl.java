@@ -85,11 +85,20 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void save(NewProductDto addProductDto) {
-        List<Category> categories = categoryRepository.findAllById(addProductDto.getProductCategoriesIds());
-        Product product = new Product(addProductDto.getProductName(), addProductDto.getProductPrice(), addProductDto.getProductDescription(), categories);
-        product.setProductStock(addProductDto.getProductStock());
+    public void save(NewProductDto newProductDto) {
+        if (productRepository.existsByProductName(newProductDto.getProductName())) {
+            throw new NameProductAllReadyExistException("This product name is already in use");
+        }
+//        Que NO hacer
+//        if (!productRepository.findAll().stream().anyMatch(product -> product.getProductName().equals(newProductDto.getProductName()))) {
+
+
+        List<Category> categories = categoryRepository.findAllById(newProductDto.getProductCategoriesIds());
+        Product product = new Product(newProductDto.getProductName(), newProductDto.getProductPrice(), newProductDto.getProductDescription(), categories);
+        product.setProductStock(newProductDto.getProductStock());
         productRepository.save(product);
+
+
     }
 
     @Override
@@ -97,20 +106,22 @@ public class ProductServiceImpl implements ProductService {
         Product existingProduct = productRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found"));
 
-        if (!productRepository.findAll().stream().anyMatch(product -> product.getProductName().equals(updateProductDto.getProductName())) || existingProduct.getProductName().equals(updateProductDto.getProductName())) {
-
-            existingProduct.setProductName(updateProductDto.getProductName());
-            existingProduct.setProductDescription(updateProductDto.getProductDescription());
-            existingProduct.setPrice(updateProductDto.getProductPrice());
-            existingProduct.setProductStock(updateProductDto.getProductStock());
-
-            Set<Category> categories = new HashSet<>(categoryRepository.findAllById(updateProductDto.getProductCategoriesIds()));
-            existingProduct.setCategories(categories);
-
-            productRepository.save(existingProduct);
+        if (productRepository.existsByProductNameAndProductIdIsNot(updateProductDto.getProductName(), productId)) {
+            throw new NameProductAllReadyExistException("This product name is already in use");
         }
 
-        throw new NameProductAllReadyExistException("This product name is already in use");
+
+        existingProduct.setProductName(updateProductDto.getProductName());
+        existingProduct.setProductDescription(updateProductDto.getProductDescription());
+        existingProduct.setPrice(updateProductDto.getProductPrice());
+        existingProduct.setProductStock(updateProductDto.getProductStock());
+
+        Set<Category> categories = new HashSet<>(categoryRepository.findAllById(updateProductDto.getProductCategoriesIds()));
+        existingProduct.setCategories(categories);
+
+        productRepository.save(existingProduct);
+
+
     }
 
     @Override

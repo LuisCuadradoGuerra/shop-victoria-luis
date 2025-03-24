@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -48,35 +49,41 @@ public class CategoryServiceImpl implements CategoryService {
         Sort.Direction direction = orderDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by(direction, orderAttribute));
 
-       return categoryRepository.findAll(pageRequest);
+        return categoryRepository.findAll(pageRequest);
     }
 
     @Override
-    public void save(NewCategoryDto addCategoryDto) {
-        Category category = new Category(addCategoryDto.getTitle(),addCategoryDto.getCategoryDescription());
+    public void save(NewCategoryDto newCategoryDto) {
+        if (categoryRepository.existsByTitle(newCategoryDto.getTitle())) {
+            throw new NameCategoryAllReadyExistException("Name category already exists");
+        }
+
+        Category category = new Category(newCategoryDto.getTitle(), newCategoryDto.getCategoryDescription());
         categoryRepository.save(category);
+
     }
 
     @Override
     public void update(UpdateCategoryDto updateCategoryDto, Long categoryId) {
         Category existingCategory = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
-        if (!categoryRepository.findAll().stream().anyMatch(category -> category.getTitle().equals(updateCategoryDto.getTitle())) || existingCategory.getTitle().equals(updateCategoryDto.getTitle())) {
 
-            existingCategory.setTitle(updateCategoryDto.getTitle());
-            existingCategory.setCategoryDescription(updateCategoryDto.getCategoryDescription());
-
-            categoryRepository.save(existingCategory);
+        if (categoryRepository.existsByTitleAndCategoryIdIsNot(updateCategoryDto.getTitle(), categoryId)) {
+            throw new NameCategoryAllReadyExistException("Name category already exists");
         }
-        throw new NameCategoryAllReadyExistException("Name category already exists");
+
+        existingCategory.setTitle(updateCategoryDto.getTitle());
+        existingCategory.setCategoryDescription(updateCategoryDto.getCategoryDescription());
+
+        categoryRepository.save(existingCategory);
     }
 
     @Override
     public void delete(Long categoryId) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new CategoryNotFoundException("Category not found"));
-        if(!category.getProducts().isEmpty()){
-           throw new CantDeleteCategoryWithProductsException("You can't delete a category with products");
+        if (!category.getProducts().isEmpty()) {
+            throw new CantDeleteCategoryWithProductsException("You can't delete a category with products");
         }
         categoryRepository.delete(category);
     }
