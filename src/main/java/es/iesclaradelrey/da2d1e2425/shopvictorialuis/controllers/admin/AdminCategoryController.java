@@ -46,12 +46,12 @@ public class AdminCategoryController {
 
     @GetMapping("/new")
     public String createNewCategory(Model model) {
-        model.addAttribute("category", new NewCategoryDto());
+        model.addAttribute("newCategoryDto", new NewCategoryDto());
         return "/admin/categories/admin-categories-new";
     }
 
     @PostMapping("/new")
-    public String createNewCategory(@Valid @ModelAttribute("category") NewCategoryDto addCategoryDto,
+    public String createNewCategory(@Valid @ModelAttribute("newCategoryDto") NewCategoryDto newCategoryDto,
                                     BindingResult bindingResult,
                                     RedirectAttributes redirectAttributes,
                                     Model model) {
@@ -60,7 +60,7 @@ public class AdminCategoryController {
             return "/admin/categories/admin-categories-new";
         }
         try {
-            categoryService.save(addCategoryDto);
+            categoryService.save(newCategoryDto);
             redirectAttributes.addFlashAttribute("successNew", "Category created");
         } catch (NameCategoryAllReadyExistException e) {
             bindingResult.rejectValue("title", null, e.getMessage());

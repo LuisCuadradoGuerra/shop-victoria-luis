@@ -8,21 +8,8 @@
 <div th:if="${cascadeError}" class="alert alert-danger" role="alert">
     <p th:text="${cascadeError}"></p>
 </div>
-<div th:if="${unexpectedError}" class="alert alert-danger" role="alert">
-    <p th:text="${unexpectedError}"></p>
-</div>
-<div th:if="${validationError}" class="alert alert-danger" role="alert">
-    <p th:text="${validationError}"></p>
-</div>
-<div th:if="${successDelete}" class="alert alert-success" role="alert">
-    <p th:text="${successDelete}"></p>
-</div>
-<div th:if="${successUpdate}" class="alert alert-success" role="alert">
-    <p th:text="${successUpdate}"></p>
-</div>
-<div th:if="${successNew}" class="alert alert-success" role="alert">
-    <p th:text="${successNew}"></p>
-</div>
+
+<div th:replace="~{admin/fragments-admin :: flashAttributes}"></div>
 
 <form th:replace="~{admin/fragments-admin :: adminOrderForm(${fields}, ${page}, ${orderAttribute}, ${orderDirection})}"></form>
 

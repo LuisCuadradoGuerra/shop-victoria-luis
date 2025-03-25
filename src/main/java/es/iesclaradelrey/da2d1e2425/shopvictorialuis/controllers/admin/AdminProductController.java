@@ -53,12 +53,12 @@ public class AdminProductController {
     public String createProductForm(Model model) {
         List<Category> categories = categoryService.findAll();
         model.addAttribute("categories", categories);
-        model.addAttribute("product", new NewProductDto());
+        model.addAttribute("newProductDto", new NewProductDto());
         return "/admin/products/admin-products-new";
     }
 
     @PostMapping("/new")
-    public String createProductSubmit(@Valid @ModelAttribute("product") NewProductDto addProductDto,
+    public String createProductSubmit(@Valid @ModelAttribute("newProductDto") NewProductDto newProductDto,
                                       BindingResult bindingResult,
                                       RedirectAttributes redirectAttributes,
                                       Model model) {
@@ -69,7 +69,7 @@ public class AdminProductController {
             return "/admin/products/admin-products-new";
         }
         try {
-            productService.save(addProductDto);
+            productService.save(newProductDto);
             redirectAttributes.addFlashAttribute("successNew", "Product created");
         } catch (NameProductAllReadyExistException e) {
             bindingResult.rejectValue("productName", null, e.getMessage());

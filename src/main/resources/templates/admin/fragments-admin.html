@@ -22,6 +22,24 @@
     </ul>
 </div>
 
+<div th:fragment="flashAttributes">
+    <div th:if="${unexpectedError}" class="alert alert-danger" role="alert">
+        <p th:text="${unexpectedError}"></p>
+    </div>
+    <div th:if="${validationError}" class="alert alert-danger" role="alert">
+        <p th:text="${validationError}"></p>
+    </div>
+    <div th:if="${successDelete}" class="alert alert-success" role="alert">
+        <p th:text="${successDelete}"></p>
+    </div>
+    <div th:if="${successUpdate}" class="alert alert-success" role="alert">
+        <p th:text="${successUpdate}"></p>
+    </div>
+    <div th:if="${successNew}" class="alert alert-success" role="alert">
+        <p th:text="${successNew}"></p>
+    </div>
+</div>
+
 <form class="form" method="get" th:fragment="adminOrderForm(fields, page, orderAttribute, orderDirection)">
     <fieldset class="form-group m-5 p-4">
         <legend class="m-3">View Control</legend>
