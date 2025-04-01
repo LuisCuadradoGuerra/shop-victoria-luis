@@ -1,0 +1,36 @@
+package es.iesclaradelrey.da2d1e2425.shopvictorialuis.restcontrollers.app;
+
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.ProductService;
+import org.springframework.data.domain.Page;
+import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/api/app/v1")
+public class AppRestController {
+
+    private final ProductService productService;
+
+    public AppRestController(ProductService productService) {
+        this.productService = productService;
+    }
+
+    @GetMapping("/products/find")
+    public Page<Product> productsFinder(@RequestParam(defaultValue = "") String search,
+                                        @RequestParam(defaultValue = "") Long cat,
+                                        @RequestParam(defaultValue = "1") Integer pageNumber,
+                                        @RequestParam(defaultValue = "10") Integer pageSize,
+                                        @RequestParam(defaultValue = "productName") String orderAttribute,
+                                        @RequestParam(defaultValue = "asc") String orderDirection,
+                                        Model model) {
+
+
+//        todo: Proper return
+        return productService.findAll(pageNumber, pageSize, orderAttribute, orderDirection);
+    }
+}
