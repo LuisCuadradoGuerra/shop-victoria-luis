@@ -1,25 +1,31 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.services;
 
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.app.AppShoppingCartDto;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.app.AppShoppingCartItemDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.ShoppingCartItem;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.OutOfStockException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.ProductNotFoundException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.ProductRepository;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.ShoppingCartItemRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
 
     private final ShoppingCartItemRepository shoppingCartItemRepository;
     private final ProductRepository productRepository;
+    private final ModelMapper modelMapper;
 
-    public ShoppingCartItemServiceImpl(ShoppingCartItemRepository shoppingCartItemRepository, ProductRepository productRepository) {
+    public ShoppingCartItemServiceImpl(ShoppingCartItemRepository shoppingCartItemRepository, ProductRepository productRepository, ModelMapper modelMapper) {
         this.shoppingCartItemRepository = shoppingCartItemRepository;
         this.productRepository = productRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -86,5 +92,27 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
     @Override
     public void clearTrolley() {
         shoppingCartItemRepository.deleteAll();
+    }
+
+    @Override
+    public AppShoppingCartDto getShoppingCartToApp() {
+        List<ShoppingCartItem> shoppingCartItems = shoppingCartItemRepository.findAll();
+//        todo Revisar esto. El modelMapper no creo que rellene bien el dto
+        return new AppShoppingCartDto(
+                shoppingCartItems
+                        .stream()
+                        .count(),
+                shoppingCartItems
+                        .stream()
+                        .mapToDouble(
+                                item -> item.getItemsCount() * item.getProduct().getPrice()
+                        ).sum(),
+                shoppingCartItems
+                        .stream()
+                        .map(
+                                item -> modelMapper.map(item, AppShoppingCartItemDto.class)
+                        )
+                        .collect(Collectors.toList())
+        );
     }
 }

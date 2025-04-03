@@ -1,5 +1,6 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.restcontrollers.app;
 
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.app.AppFindProductDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.ProductService;
 import org.springframework.data.domain.Page;
@@ -21,16 +22,16 @@ public class AppRestController {
     }
 
     @GetMapping("/products/find")
-    public Page<Product> productsFinder(@RequestParam(defaultValue = "") String search,
-                                        @RequestParam(defaultValue = "") Long cat,
-                                        @RequestParam(defaultValue = "1") Integer pageNumber,
-                                        @RequestParam(defaultValue = "10") Integer pageSize,
-                                        @RequestParam(defaultValue = "productName") String orderAttribute,
-                                        @RequestParam(defaultValue = "asc") String orderDirection,
-                                        Model model) {
+    public Page<AppFindProductDto> productsFinder(@RequestParam(defaultValue = "") String search,
+                                                  @RequestParam(defaultValue = "") Long cat,
+                                                  @RequestParam(defaultValue = "1") Integer pageNumber,
+                                                  @RequestParam(defaultValue = "10") Integer pageSize,
+                                                  @RequestParam(defaultValue = "productName") String orderAttribute,
+                                                  @RequestParam(defaultValue = "asc") String orderDirection,
+                                                  Model model) {
 
 
-//        todo: Proper return
-        return productService.findAll(pageNumber, pageSize, orderAttribute, orderDirection);
+//        todo: Description search
+        return productService.customSearch(search,cat,pageNumber, pageSize, orderAttribute, orderDirection);
     }
 }

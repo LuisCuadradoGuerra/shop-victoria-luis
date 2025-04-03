@@ -1,6 +1,8 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic;
 
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +17,12 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAllByCategoriesCategoryId(Long categoriesCategoryId);
 
+    Page<Product> findAllByCategoriesCategoryId(Long categoriesCategoryId, Pageable pageable);
+
+    Page<Product> findAllByProductNameContainingIgnoreCase(String productName, Pageable pageable);
+
+    Page<Product> findAllByProductNameContainingIgnoreCaseAndCategoriesCategoryId(String productName, Long categoriesCategoryId, Pageable pageable);
+
     @Query(value = "select count(1) from products p join products_categories pc on p.product_id = pc.product_id where pc.category_id = :id", nativeQuery = true)
     Long countProductsByCategoryId(@Param("id") Long categoryId);
 
@@ -28,4 +36,5 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
     Boolean existsByProductName(String productName);
 
     Boolean existsByProductNameAndProductIdIsNot(String productName, Long productId);
+
 }

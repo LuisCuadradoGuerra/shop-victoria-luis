@@ -2,6 +2,7 @@ package es.iesclaradelrey.da2d1e2425.shopvictorialuis.services;
 
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.NewProductDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.UpdateProductDto;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.app.AppFindProductDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.NameProductAllReadyExistException;
@@ -9,27 +10,29 @@ import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.ProductNotFoundE
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.CategoryRepository;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.FeedbackRepository;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.ProductRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final FeedbackRepository feedbackRepository;
+    private final ModelMapper modelMapper;
 
-    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, FeedbackRepository feedbackRepository) {
+    public ProductServiceImpl(ProductRepository productRepository, CategoryRepository categoryRepository, FeedbackRepository feedbackRepository, ModelMapper modelMapper) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.feedbackRepository = feedbackRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -65,6 +68,31 @@ public class ProductServiceImpl implements ProductService {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by(direction, orderAttribute));
 
         return productRepository.findAll(pageRequest);
+    }
+
+    @Override
+    public Page<AppFindProductDto> customSearch(String search, Long cat, Integer pageNumber, Integer pageSize, String orderAttribute, String orderDirection) {
+        Sort.Direction direction = orderDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by(direction, orderAttribute));
+
+        Page<Product> foundProducts;
+
+        if (cat == null && search != null) {
+            foundProducts = productRepository.findAllByProductNameContainingIgnoreCase(search, pageRequest);
+        } else if (search == null && cat != null) {
+            foundProducts = productRepository.findAllByCategoriesCategoryId(cat , pageRequest);
+        } else if (cat != null && search != null) {
+            foundProducts = productRepository.findAllByProductNameContainingIgnoreCaseAndCategoriesCategoryId(search, cat, pageRequest);
+        } else {
+            foundProducts = productRepository.findAll(pageRequest);
+        }
+
+        return new PageImpl<>(
+                foundProducts
+                        .stream()
+                        .map(product -> modelMapper.map(product, AppFindProductDto.class))
+                        .collect(Collectors.toList()),
+                pageRequest, foundProducts.getSize());
     }
 
 //    Sql and JPQL
