@@ -99,9 +99,8 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
         List<ShoppingCartItem> shoppingCartItems = shoppingCartItemRepository.findAll();
 //        todo Revisar esto. El modelMapper no creo que rellene bien el dto
         return new AppShoppingCartDto(
-                shoppingCartItems
-                        .stream()
-                        .count(),
+                (long) shoppingCartItems
+                        .size(),
                 shoppingCartItems
                         .stream()
                         .mapToDouble(

@@ -22,7 +22,7 @@ public class AppRestController {
     }
 
     @GetMapping("/products/find")
-    public Page<AppFindProductDto> productsFinder(@RequestParam(defaultValue = "") String search,
+    public ResponseEntity<Page<AppFindProductDto>> productsFinder(@RequestParam(defaultValue = "") String search,
                                                   @RequestParam(defaultValue = "") Long cat,
                                                   @RequestParam(defaultValue = "1") Integer pageNumber,
                                                   @RequestParam(defaultValue = "10") Integer pageSize,
@@ -32,6 +32,6 @@ public class AppRestController {
 
 
 //        todo: Description search
-        return productService.customSearch(search,cat,pageNumber, pageSize, orderAttribute, orderDirection);
+        return ResponseEntity.ok(productService.customSearch(search,cat,pageNumber, pageSize, orderAttribute, orderDirection));
     }
 }

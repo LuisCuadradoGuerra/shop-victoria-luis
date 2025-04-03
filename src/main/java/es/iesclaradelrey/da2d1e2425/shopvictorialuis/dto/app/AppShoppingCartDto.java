@@ -3,7 +3,7 @@ package es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.app;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import lombok.*;
-import org.springframework.security.core.parameters.P;
+//import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
