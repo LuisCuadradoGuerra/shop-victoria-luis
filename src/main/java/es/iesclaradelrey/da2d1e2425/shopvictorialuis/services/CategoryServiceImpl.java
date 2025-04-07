@@ -2,11 +2,13 @@ package es.iesclaradelrey.da2d1e2425.shopvictorialuis.services;
 
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.NewCategoryDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.UpdateCategoryDto;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.app.AppCategoryDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.CantDeleteCategoryWithProductsException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.CategoryNotFoundException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.NameCategoryAllReadyExistException;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.CategoryRepository;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -14,13 +16,16 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository) {
+    public CategoryServiceImpl(CategoryRepository categoryRepository, ModelMapper modelMapper) {
         this.categoryRepository = categoryRepository;
+        this.modelMapper = modelMapper;
     }
 
     @Override
@@ -86,5 +91,13 @@ public class CategoryServiceImpl implements CategoryService {
             throw new CantDeleteCategoryWithProductsException("You can't delete a category with products");
         }
         categoryRepository.delete(category);
+    }
+
+    @Override
+    public List<AppCategoryDto> appFindAll() {
+        return categoryRepository.findAll()
+                .stream()
+                .map(category -> modelMapper.map(category, AppCategoryDto.class))
+                .collect(Collectors.toList());
     }
 }

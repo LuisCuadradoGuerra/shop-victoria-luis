@@ -1,7 +1,6 @@
 package es.iesclaradelrey.da2d1e2425.shopvictorialuis.restcontrollers.app;
 
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.app.AppFindProductDto;
-import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.ProductService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +11,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/app/v1")
-public class AppRestController {
+@RequestMapping("/api/app/v1/products")
+public class AppProductController {
 
     private final ProductService productService;
 
-    public AppRestController(ProductService productService) {
+    public AppProductController(ProductService productService) {
         this.productService = productService;
     }
 
-    @GetMapping("/products/find")
+    @GetMapping("/find")
     public ResponseEntity<Page<AppFindProductDto>> productsFinder(@RequestParam(defaultValue = "") String search,
                                                   @RequestParam(defaultValue = "") Long cat,
                                                   @RequestParam(defaultValue = "1") Integer pageNumber,
@@ -29,9 +28,6 @@ public class AppRestController {
                                                   @RequestParam(defaultValue = "productName") String orderAttribute,
                                                   @RequestParam(defaultValue = "asc") String orderDirection,
                                                   Model model) {
-
-
-//        todo: Description search
         return ResponseEntity.ok(productService.customSearch(search,cat,pageNumber, pageSize, orderAttribute, orderDirection));
     }
 }

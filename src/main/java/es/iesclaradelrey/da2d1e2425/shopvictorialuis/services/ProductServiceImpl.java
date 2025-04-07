@@ -10,6 +10,7 @@ import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.ProductNotFoundE
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.CategoryRepository;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.FeedbackRepository;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.ProductRepository;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.restcontrollers.app.criteria.ProductSpecification;
 import jakarta.persistence.criteria.Predicate;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
@@ -76,18 +77,18 @@ public class ProductServiceImpl implements ProductService {
     public Page<AppFindProductDto> customSearch(String search, Long cat, Integer pageNumber, Integer pageSize, String orderAttribute, String orderDirection) {
         Sort.Direction direction = orderDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by(direction, orderAttribute));
+        Specification<Product> productSpecification = ProductSpecification.findProductsForApp(search, cat);
+        Page<Product> foundProducts = productRepository.findAll(productSpecification, pageRequest);
 
-        Page<Product> foundProducts;
-
-        if (cat == null && search != null) {
-            foundProducts = productRepository.findAllByProductNameContainingIgnoreCase(search, pageRequest);
-        } else if (search == null && cat != null) {
-            foundProducts = productRepository.findAllByCategoriesCategoryId(cat , pageRequest);
-        } else if (cat != null && search != null) {
-            foundProducts = productRepository.findAllByProductNameContainingIgnoreCaseAndCategoriesCategoryId(search, cat, pageRequest);
-        } else {
-            foundProducts = productRepository.findAll(pageRequest);
-        }
+//        if (cat == null && search != null) {
+//            foundProducts = productRepository.findAllByProductNameContainingIgnoreCase(search, pageRequest);
+//        } else if (search == null && cat != null) {
+//            foundProducts = productRepository.findAllByCategoriesCategoryId(cat , pageRequest);
+//        } else if (cat != null && search != null) {
+//            foundProducts = productRepository.findAllByProductNameContainingIgnoreCaseAndCategoriesCategoryId(search, cat, pageRequest);
+//        } else {
+//            foundProducts = productRepository.findAll(pageRequest);
+//        }
 
         return new PageImpl<>(
                 foundProducts

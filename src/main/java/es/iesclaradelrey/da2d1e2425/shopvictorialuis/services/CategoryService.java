@@ -2,6 +2,7 @@ package es.iesclaradelrey.da2d1e2425.shopvictorialuis.services;
 
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.NewCategoryDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.admin.UpdateCategoryDto;
+import es.iesclaradelrey.da2d1e2425.shopvictorialuis.dto.app.AppCategoryDto;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Category;
 import org.springframework.data.domain.Page;
 
@@ -20,4 +21,6 @@ public interface CategoryService {
     void update(UpdateCategoryDto category, Long categoryId);
 
     void delete(Long categoryId);
+
+    List<AppCategoryDto> appFindAll();
 }
