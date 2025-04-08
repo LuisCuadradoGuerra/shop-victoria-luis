@@ -5,6 +5,8 @@ import es.iesclaradelrey.da2d1e2425.shopvictorialuis.entities.Product;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.CategoryService;
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.ProductService;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 

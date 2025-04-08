@@ -1,3 +1,13 @@
+CREATE TABLE app_users
+(
+    appUser_id          BIGINT AUTO_INCREMENT PRIMARY KEY,
+    appUserAlias        VARCHAR(50)   NOT NULL UNIQUE,
+    appUserFirstName    VARCHAR(50)   NOT NULL,
+    appUserLastName     VARCHAR(50)   NOT NULL,
+    appUserPassword     VARCHAR(200)   NOT NULL,
+    appUserEmail        VARCHAR(200)   NOT NULL UNIQUE
+);
+
 CREATE TABLE categories
 (
     category_id          BIGINT AUTO_INCREMENT PRIMARY KEY,
