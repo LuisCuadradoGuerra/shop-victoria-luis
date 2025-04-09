@@ -1,11 +1,11 @@
 CREATE TABLE app_users
 (
-    appUser_id          BIGINT AUTO_INCREMENT PRIMARY KEY,
-    appUserAlias        VARCHAR(50)   NOT NULL UNIQUE,
-    appUserFirstName    VARCHAR(50)   NOT NULL,
-    appUserLastName     VARCHAR(50)   NOT NULL,
-    appUserPassword     VARCHAR(200)   NOT NULL,
-    appUserEmail        VARCHAR(200)   NOT NULL UNIQUE
+    app_user_id           BIGINT AUTO_INCREMENT PRIMARY KEY,
+    app_user_alias        VARCHAR(50)   NOT NULL UNIQUE,
+    app_user_first_name    VARCHAR(50)   NOT NULL,
+    app_user_last_name     VARCHAR(50)   NOT NULL,
+    app_user_password     VARCHAR(200)   NOT NULL,
+    app_user_email        VARCHAR(200)   NOT NULL UNIQUE
 );
 
 CREATE TABLE categories
