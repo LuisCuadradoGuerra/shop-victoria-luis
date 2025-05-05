@@ -75,6 +75,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Page<AppFindProductDto> customSearch(String search, Long cat, Integer pageNumber, Integer pageSize, String orderAttribute, String orderDirection) {
+
         Sort.Direction direction = orderDirection.equals("asc") ? Sort.Direction.ASC : Sort.Direction.DESC;
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by(direction, orderAttribute));
         Specification<Product> productSpecification = ProductSpecification.findProductsForApp(search, cat);
