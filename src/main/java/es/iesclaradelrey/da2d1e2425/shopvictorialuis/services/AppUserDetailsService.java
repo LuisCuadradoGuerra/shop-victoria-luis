@@ -40,6 +40,7 @@ Cosas que se pueden devolver en el user details
 //        return User.builder()
 //                .username(alias)
 //                .password(appUser.getAppUserPassword())
+//                .roles("USER") ***
 //                .build();
 
         return User.withUsername(alias)

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,14 +22,22 @@ public class SecurityConfig {
         http.csrf(config ->
                 config.ignoringRequestMatchers("/api/**"));
 
+
 //        Autorización de las rutas a authentication porque son necesarias para logear y obtener tokens
         http
                 .authorizeHttpRequests(auth ->
                         auth
 //                                Flujo: importante a la hora de aplicar las reglas de autorización
                                 .requestMatchers("/api/app/v1/auth/**").permitAll()
-                                .requestMatchers("/api/app/v1/**").authenticated()
+//                                .requestMatchers("/api/app/v1/**").authenticated()
+                                .requestMatchers("/api/app/v1/**").permitAll()
+                                .requestMatchers("/login").permitAll()
+//                                .anyRequest().authenticated());
                                 .anyRequest().permitAll());
+
+//        Formulario de login
+//        http.formLogin(Customizer.withDefaults());
+        http.formLogin(login -> login.loginPage("/login"));
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 

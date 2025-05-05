@@ -14,11 +14,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
+
+    // Lista de rutas públicas
+    private static final List<String> PUBLIC_PATHS = List.of(
+            "/api/app/v1/auth",
+            "/api/app/v1/products/find"
+    );
 
     public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
         this.jwtService = jwtService;
@@ -30,6 +37,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
         String pathRequest = request.getRequestURI();
+
+        // Ignorar validación si la ruta está en la lista blanca
+        if (isPublicPath(pathRequest)) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
         if (pathRequest.contains("/api/app")) {
             String authHeader = request.getHeader("Authorization");
@@ -52,7 +65,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
 //                Fijar el usuario en el contexto de seguridad
                 UserDetails userDetails = userDetailsService.loadUserByUsername(alias);
-                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null);
+//                Cambios por GPT: userDetails.getAuthorities()
+                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
             } catch (Exception e) {
@@ -63,5 +77,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isPublicPath(String path) {
+        return PUBLIC_PATHS.stream().anyMatch(path::startsWith);
     }
 }

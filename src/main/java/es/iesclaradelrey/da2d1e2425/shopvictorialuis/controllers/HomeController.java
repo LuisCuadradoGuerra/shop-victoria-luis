@@ -23,5 +23,8 @@ public class HomeController extends BasicController{
         Collection<Category> categories = categoryService.findAll();
         return new ModelAndView("index", "categories", categories);
     }
-
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 }
