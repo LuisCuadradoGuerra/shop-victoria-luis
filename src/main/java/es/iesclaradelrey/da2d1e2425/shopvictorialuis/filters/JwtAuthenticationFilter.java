@@ -23,8 +23,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     // Lista de rutas públicas
     private static final List<String> PUBLIC_PATHS = List.of(
-            "/api/app/v1/auth",
-            "/api/app/v1/products/find"
+            "/api/app/v1/auth"
     );
 
     public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
@@ -80,6 +79,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private boolean isPublicPath(String path) {
-        return PUBLIC_PATHS.stream().anyMatch(path::startsWith);
+        return PUBLIC_PATHS.stream().anyMatch(path::contains);
     }
 }

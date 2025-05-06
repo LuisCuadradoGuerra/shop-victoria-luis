@@ -4,6 +4,7 @@ import es.iesclaradelrey.da2d1e2425.shopvictorialuis.filters.JwtAuthenticationFi
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.services.AppUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -15,35 +16,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-public class SecurityConfig {
-
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
-        http.csrf(config ->
-                config.ignoringRequestMatchers("/api/**"));
-
-
-//        Autorización de las rutas a authentication porque son necesarias para logear y obtener tokens
-        http
-                .authorizeHttpRequests(auth ->
-                        auth
-//                                Flujo: importante a la hora de aplicar las reglas de autorización
-                                .requestMatchers("/api/app/v1/auth/**").permitAll()
-//                                .requestMatchers("/api/app/v1/**").authenticated()
-                                .requestMatchers("/api/app/v1/**").permitAll()
-                                .requestMatchers("/login").permitAll()
-//                                .anyRequest().authenticated());
-                                .anyRequest().permitAll());
-
-//        Formulario de login
-//        http.formLogin(Customizer.withDefaults());
-        http.formLogin(login -> login.loginPage("/login"));
-
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
-        return http.build();
-    }
-
+@Order(0)
+public class BaseSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
