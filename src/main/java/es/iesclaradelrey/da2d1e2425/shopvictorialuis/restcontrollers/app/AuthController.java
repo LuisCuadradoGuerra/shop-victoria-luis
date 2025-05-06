@@ -51,7 +51,7 @@ public class AuthController {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
-    @PostMapping("/revoque")
+    @PostMapping("/revoke")
     public ResponseEntity<Void> revoke() {
         throw new UnsupportedOperationException("Not supported yet.");
     }

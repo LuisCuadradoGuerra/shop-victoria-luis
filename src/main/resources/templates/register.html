@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join the Magical Order - Hag Bunion</title>
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script>tailwind.config={theme:{extend:{colors:{primary:'#2D1B69',secondary:'#8A7CB6'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+  <style>
+    :where([class^="ri-"])::before { content: "\f3c2"; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #2D1B69 0%, #1A103F 100%);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+    .magical-effect {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle at center, rgba(138, 124, 182, 0.2) 0%, rgba(45, 27, 105, 0) 70%);
+      filter: blur(40px);
+      pointer-events: none;
+      animation: pulse 4s ease-in-out infinite;
+    }
+    .magical-effect.left {
+      left: -150px;
+      top: 30%;
+    }
+    .magical-effect.right {
+      right: -150px;
+      top: 60%;
+    }
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1) translate(0, 0);
+        opacity: 0.5;
+      }
+      50% {
+        transform: scale(1.2) translate(20px, -20px);
+        opacity: 0.8;
+      }
+    }
+    .company-logo {
+      width: 40px;
+      height: 40px;
+      background: url('https://readdy.ai/api/search-image?query=magical%20spellbook%20logo%20icon%20with%20glowing%20purple%20aura%2C%20minimalist%20design%2C%20professional%20emblem%20on%20transparent%20background&width=200&height=200&seq=logo1&orientation=squarish') no-repeat center center;
+      background-size: contain;
+      margin-right: 12px;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-5px);
+      }
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: url('https://readdy.ai/api/search-image?query=magical%20floating%20spellbooks%20with%20glowing%20purple%20aura%2C%20ancient%20mystical%20tomes%20with%20ethereal%20light%2C%20floating%20in%20dark%20space%2C%20subtle%20magical%20energy%2C%20minimalist%2C%20low%20opacity%2C%20seamless%20pattern&width=800&height=600&seq=spellbooks1&orientation=landscape');
+      background-size: cover;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .logo-animation, .card-animation {
+      position: relative;
+      z-index: 1;
+    }
+    .logo-animation {
+      animation: fadeInDown 0.8s ease-out;
+    }
+    .card-animation {
+      animation: fadeIn 1s ease-out;
+    }
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    .input-field {
+      background-color: rgba(255, 255, 255, 0.9);
+      color: #2D1B69;
+      transition: all 0.3s ease;
+    }
+    .input-field::placeholder {
+      color: #8A7CB6;
+    }
+    .input-field:focus {
+      box-shadow: 0 0 0 2px rgba(138, 124, 182, 0.5);
+      outline: none;
+    }
+    .login-btn {
+      transition: all 0.3s ease;
+    }
+    .login-btn:hover {
+      transform: scale(1.02);
+    }
+    .custom-checkbox {
+      position: relative;
+      padding-left: 28px;
+      cursor: pointer;
+      user-select: none;
+    }
+    .custom-checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 18px;
+      width: 18px;
+      background-color: rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      transition: all 0.2s ease;
+    }
+    .custom-checkbox:hover input ~ .checkmark {
+      background-color: rgba(255, 255, 255, 0.3);
+    }
+    .custom-checkbox input:checked ~ .checkmark {
+      background-color: #8A7CB6;
+    }
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    .custom-checkbox input:checked ~ .checkmark:after {
+      display: block;
+    }
+    .custom-checkbox .checkmark:after {
+      left: 6px;
+      top: 2px;
+      width: 6px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+    .social-btn {
+      transition: all 0.3s ease;
+    }
+    .social-btn:hover {
+      transform: translateY(-2px);
+    }
+    .loading {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body class="flex flex-col items-center justify-center p-6">
+<div class="magical-effect left"></div>
+<div class="magical-effect right"></div>
+<div class="logo-animation mb-8 flex items-center justify-center">
+  <div class="company-logo"></div>
+  <h1 class="font-['Pacifico'] text-4xl md:text-5xl text-white">Hag Bunion</h1>
+</div>
+<div class="card-animation w-full max-w-xl bg-[url('https://readdy.ai/api/search-image?query=handsome%20male%20wizard%20in%20elegant%20purple%20robes%20holding%20a%20glowing%20magical%20parchment%2C%20warm%20welcoming%20smile%2C%20professional%20portrait%2C%20mystical%20atmosphere%2C%20high%20quality%20digital%20art&width=800&height=1000&seq=mage1&orientation=portrait')] bg-right bg-contain bg-no-repeat bg-primary bg-opacity-90 rounded-md p-8 shadow-lg">
+  <h2 class="text-2xl font-semibold text-white text-center mb-4">Begin Your Magical Journey</h2>
+  <p class="text-white text-center text-sm mb-8 opacity-90">Greetings, aspiring mage. Your path to mystical mastery begins here.</p>
+  <form id="registerForm" class="max-w-md">
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div>
+        <label for="firstName" class="block text-white text-sm font-medium mb-2">First Name</label>
+        <div class="relative">
+          <div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center text-primary">
+            <i class="ri-user-line"></i>
+          </div>
+          <input type="text" id="firstName" class="input-field w-full py-3 px-10 rounded-button border-none" placeholder="Your given name" required>
+        </div>
+      </div>
+      <div>
+        <label for="lastName" class="block text-white text-sm font-medium mb-2">Last Name</label>
+        <div class="relative">
+          <div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center text-primary">
+            <i class="ri-user-line"></i>
+          </div>
+          <input type="text" id="lastName" class="input-field w-full py-3 px-10 rounded-button border-none" placeholder="Your family name" required>
+        </div>
+      </div>
+    </div>
+    <div class="mb-6">
+      <label for="alias" class="block text-white text-sm font-medium mb-2">Magical Alias</label>
+      <div class="relative">
+        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center text-primary">
+          <i class="ri-magic-line"></i>
+        </div>
+        <input type="text" id="alias" class="input-field w-full py-3 px-10 rounded-button border-none" placeholder="Choose your mystical name" required>
+      </div>
+    </div>
+    <div class="mb-6">
+      <label for="email" class="block text-white text-sm font-medium mb-2">Ethereal Address (Email)</label>
+      <div class="relative">
+        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center text-primary">
+          <i class="ri-mail-line"></i>
+        </div>
+        <input type="email" id="email" class="input-field w-full py-3 px-10 rounded-button border-none" placeholder="Your mystical contact" required>
+      </div>
+    </div>
+    <div class="mb-6">
+      <label for="password" class="block text-white text-sm font-medium mb-2">Secret Incantation (Password)</label>
+      <div class="relative">
+        <div class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center text-primary">
+          <i class="ri-lock-line"></i>
+        </div>
+        <input type="password" id="password" class="input-field w-full py-3 px-10 rounded-button border-none" placeholder="Create your secret spell" required>
+        <button type="button" id="togglePassword" class="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 flex items-center justify-center text-primary">
+          <i class="ri-eye-line"></i>
+        </button>
+      </div>
+    </div>
+    <div class="flex items-center mb-6">
+      <label class="custom-checkbox text-white text-sm">
+        I accept the mystical terms and conditions
+        <input type="checkbox" required>
+        <span class="checkmark"></span>
+      </label>
+    </div>
+    <button type="submit" class="login-btn w-full bg-secondary text-white py-3 px-4 rounded-button whitespace-nowrap font-medium flex items-center justify-center">
+      <span id="registerText">Begin Your Journey</span>
+      <div id="loadingSpinner" class="loading ml-2"></div>
+    </button>
+  </form>
+  <div class="mt-8 text-center">
+    <p class="text-white text-sm">
+      Already a member of our mystical order? <a href="#" class="text-secondary font-medium hover:underline">Return to the Portal</a>
+    </p>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const togglePassword = document.getElementById('togglePassword');
+    const password = document.getElementById('password');
+    const registerForm = document.getElementById('registerForm');
+    const registerText = document.getElementById('registerText');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    togglePassword.addEventListener('click', function() {
+      const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+      password.setAttribute('type', type);
+// Toggle icon
+      const iconClass = type === 'password' ? 'ri-eye-line' : 'ri-eye-off-line';
+      togglePassword.innerHTML = `<i class="${iconClass}"></i>`;
+    });
+    registerForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      registerText.textContent = 'Casting Spell...';
+      loadingSpinner.style.display = 'block';
+      setTimeout(function() {
+        loadingSpinner.style.display = 'none';
+        registerText.textContent = 'Begin Your Journey';
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const alias = document.getElementById('alias').value;
+        const email = document.getElementById('email').value;
+        if (firstName && lastName && alias && email && password.value) {
+          const successMessage = document.createElement('div');
+          successMessage.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-primary p-6 rounded-md shadow-lg text-white text-center z-50';
+          successMessage.innerHTML = `
+<i class="ri-magic-line text-4xl mb-4"></i>
+<h3 class="text-xl font-semibold mb-2">Welcome, ${alias}!</h3>
+<p class="mb-4">Your magical journey has begun.</p>
+<button class="bg-secondary px-4 py-2 rounded-button" onclick="this.parentElement.remove()">Continue</button>
+`;
+          document.body.appendChild(successMessage);
+        } else {
+          const errorMessage = document.createElement('div');
+          errorMessage.className = 'fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-600 p-6 rounded-md shadow-lg text-white text-center z-50';
+          errorMessage.innerHTML = `
+<i class="ri-error-warning-line text-4xl mb-4"></i>
+<p class="mb-4">Please complete all magical credentials</p>
+<button class="bg-white text-red-600 px-4 py-2 rounded-button" onclick="this.parentElement.remove()">Try Again</button>
+`;
+          document.body.appendChild(errorMessage);
+        }
+      }, 1500);
+    });
+  });
+</script>
+</body>
+</html>
