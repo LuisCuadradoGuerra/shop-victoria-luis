@@ -13,9 +13,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @Order(100)
 public class CartApiSecurityConfig {
+//    todo api y app api
     @Bean
     public SecurityFilterChain cartApiSecurityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
-        http.securityMatcher("/api/**");
+        http.securityMatcher("/api/v1");
 
         // Quitar protección CSRF porque en API no se usan formularios.
         http.csrf(AbstractHttpConfigurer::disable);
@@ -32,7 +33,7 @@ public class CartApiSecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
                                 // Flujo: importante a la hora de aplicar las reglas de autorización
-                                .requestMatchers("/api/**").permitAll()
+                                .requestMatchers("/api/v1/**").permitAll()
                                 .anyRequest().authenticated());
 
 

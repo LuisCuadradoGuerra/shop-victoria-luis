@@ -8,4 +8,8 @@ public interface AppUserService {
     AppUser register(RegisterUserDto registerUserDto);
 
     AppUser login(LoginUserDto loginUserDto);
+
+    Long getCurrentAppUserId();
+
+    AppUser getCurrentAppUser();
 }

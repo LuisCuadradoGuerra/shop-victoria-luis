@@ -5,6 +5,9 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -43,5 +46,8 @@ public class AppUser {
     @NotNull
     @Column(name = "app_user_email", nullable = false, length = 200)
     private String appUserEmail;
+
+    @OneToMany(mappedBy = "appUser")
+    private Set<ShoppingCartItem> shoppingCartItems = new LinkedHashSet<>();
 
 }

@@ -49,8 +49,10 @@ CREATE TABLE shopping_cart_items
     creation_date         TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     update_date           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     product_id            BIGINT    NOT NULL,
+    app_user_id           BIGINT    NOT NULL,
     CONSTRAINT fk_product_cart FOREIGN KEY (product_id) REFERENCES products (product_id) ON DELETE CASCADE,
-    CONSTRAINT unique_product UNIQUE (product_id) -- Esto asegura que solo haya una fila por producto en el carrito
+    CONSTRAINT fk_app_user_cart FOREIGN KEY (app_user_id) REFERENCES app_users (app_user_id) ON DELETE CASCADE,
+    CONSTRAINT unique_product_by_user UNIQUE (product_id, app_user_id)
 );
 
 CREATE TABLE products_categories (

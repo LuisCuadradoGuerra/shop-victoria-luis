@@ -7,6 +7,7 @@ import es.iesclaradelrey.da2d1e2425.shopvictorialuis.exceptions.UserAliasAlready
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.AppUserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,5 +48,19 @@ public class AppUserServiceImpl implements AppUserService {
         authenticationManager.authenticate(authenticationToken);
         return appUserRepository.findAppUserByAppUserAlias(loginUserDto.getAppUserAlias())
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("Alias: %s is in use", loginUserDto.getAppUserAlias())));
+    }
+
+    @Override
+    public Long getCurrentAppUserId() {
+        return this.getCurrentAppUser().getAppUserId();
+    }
+
+    @Override
+    public AppUser getCurrentAppUser() {
+        // Obtener cual es el usuario logado
+        String alias = SecurityContextHolder.getContext().getAuthentication().getName();
+        // buscar el usuario en el repositorio
+        return appUserRepository.findAppUserByAppUserAlias(alias).orElseThrow(() ->
+                new UsernameNotFoundException(String.format("User %s not found", alias)));
     }
 }

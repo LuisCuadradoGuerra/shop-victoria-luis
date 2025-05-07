@@ -30,4 +30,5 @@ public class Feedback {
     @ManyToOne
         @JoinColumn(name = "product_id", nullable = false)
     private Product product;
+//    todo enlazar con users y cambiar username por appUserAlias
 }

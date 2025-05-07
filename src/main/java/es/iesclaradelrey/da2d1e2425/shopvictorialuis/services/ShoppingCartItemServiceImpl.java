@@ -44,8 +44,8 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
     }
 
     @Override
-    public Optional<ShoppingCartItem> findById(Long id) {
-        return shoppingCartItemRepository.findById(id);
+    public List<ShoppingCartItem> findByAppUserId(Long appUserId) {
+        return shoppingCartItemRepository.findAllByAppUserAppUserId(appUserId);
     }
 
     @Override
