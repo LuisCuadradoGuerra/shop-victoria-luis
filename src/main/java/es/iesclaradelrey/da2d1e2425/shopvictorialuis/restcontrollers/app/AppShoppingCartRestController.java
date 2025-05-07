@@ -20,7 +20,6 @@ public class AppShoppingCartRestController {
         return shoppingCartItemService.getShoppingCartToApp();
     }
 
-//    todo probando
     @PostMapping("/{productId}")
     public AppShoppingCartDto addShoppingCart(@PathVariable(name = "productId") Long productId) {
         shoppingCartItemService.addToTrolley(productId, 1L);

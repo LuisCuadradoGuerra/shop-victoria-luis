@@ -22,7 +22,7 @@ public class AppShoppingCartItemDto {
     private Double productPrice;
     @NotNull
     @Positive(message = "If you don't have at least one product, why are you here?")
-    private Integer quantity;
+    private Long quantity;
     @NotBlank(message = "You should put an image of the product")
     private String productIcon;
     @NotNull

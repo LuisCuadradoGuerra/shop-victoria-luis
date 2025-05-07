@@ -73,4 +73,12 @@ public class ShoppingCartItem {
     public void setProduct(Product product) {
         this.product = product;
     }
+
+    public Long getQuantity() {
+        return this.itemsCount;
+    }
+
+    public Double getTotalPrice() {
+        return this.product.getPrice() * this.itemsCount;
+    }
 }

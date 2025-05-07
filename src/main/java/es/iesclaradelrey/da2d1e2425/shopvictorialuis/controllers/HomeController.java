@@ -27,4 +27,10 @@ public class HomeController extends BasicController{
     public String login() {
         return "login";
     }
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+
+//    todo PostMapping("/register") para registrarse
 }

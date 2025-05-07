@@ -96,11 +96,12 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
 
     @Override
     public AppShoppingCartDto getShoppingCartToApp() {
+//        todo Cuando ponga usuarios, no hacer un findAll
         List<ShoppingCartItem> shoppingCartItems = shoppingCartItemRepository.findAll();
-//        todo Revisar esto. El modelMapper no creo que rellene bien el dto
         return new AppShoppingCartDto(
-                (long) shoppingCartItems
-                        .size(),
+                shoppingCartItems
+                        .stream()
+                        .mapToLong(ShoppingCartItem::getItemsCount).sum(),
                 shoppingCartItems
                         .stream()
                         .mapToDouble(

@@ -18,10 +18,9 @@ public class WebSecurityConfig {
                 authorizeHttpRequests(auth ->
                         auth
                                 .requestMatchers("/login").permitAll()
-//                                .requestMatchers("/")
+                                .requestMatchers("/register").permitAll()
                                 .anyRequest().authenticated());
 
-        //http.formLogin(Customizer.withDefaults());
         http.formLogin(forms -> forms.loginPage("/login") );
         return http.build();
     }
