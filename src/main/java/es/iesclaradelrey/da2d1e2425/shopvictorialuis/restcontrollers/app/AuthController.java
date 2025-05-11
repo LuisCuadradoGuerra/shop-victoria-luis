@@ -15,44 +15,44 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/app/v1/auth")
 public class AuthController {
-
-    private final AppUserService appUserService;
-    private final JwtService jwtService;
-
-    public AuthController(AppUserService appUserService, JwtService jwtService) {
-        this.appUserService = appUserService;
-        this.jwtService = jwtService;
-    }
-
-    @PostMapping("/register")
-    public ResponseEntity<TokensDto> register(@RequestBody RegisterUserDto registerUserDto) {
-        AppUser appUser = appUserService.register(registerUserDto);
-        String accessToken = jwtService.generateAccessToken(appUser);
-        String refreshToken = jwtService.generateRefreshToken(appUser);
-        return ResponseEntity.ok(TokensDto.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build());
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<TokensDto> login(@RequestBody LoginUserDto loginUserDto) {
-        AppUser appUser = appUserService.login(loginUserDto);
-        String accessToken = jwtService.generateAccessToken(appUser);
-        String refreshToken = jwtService.generateRefreshToken(appUser);
-        return ResponseEntity.ok(TokensDto.builder()
-                .accessToken(accessToken)
-                .refreshToken(refreshToken)
-                .build());
-    }
-
-    @PostMapping("/refresh")
-    public ResponseEntity<TokensDto> refresh() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @PostMapping("/revoke")
-    public ResponseEntity<Void> revoke() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
+//
+//    private final AppUserService appUserService;
+//    private final JwtService jwtService;
+//
+//    public AuthController(AppUserService appUserService, JwtService jwtService) {
+//        this.appUserService = appUserService;
+//        this.jwtService = jwtService;
+//    }
+//
+//    @PostMapping("/register")
+//    public ResponseEntity<TokensDto> register(@RequestBody RegisterUserDto registerUserDto) {
+//        AppUser appUser = appUserService.register(registerUserDto);
+//        String accessToken = jwtService.generateAccessToken(appUser);
+//        String refreshToken = jwtService.generateRefreshToken(appUser);
+//        return ResponseEntity.ok(TokensDto.builder()
+//                .accessToken(accessToken)
+//                .refreshToken(refreshToken)
+//                .build());
+//    }
+//
+//    @PostMapping("/login")
+//    public ResponseEntity<TokensDto> login(@RequestBody LoginUserDto loginUserDto) {
+//        AppUser appUser = appUserService.login(loginUserDto);
+//        String accessToken = jwtService.generateAccessToken(appUser);
+//        String refreshToken = jwtService.generateRefreshToken(appUser);
+//        return ResponseEntity.ok(TokensDto.builder()
+//                .accessToken(accessToken)
+//                .refreshToken(refreshToken)
+//                .build());
+//    }
+//
+//    @PostMapping("/refresh")
+//    public ResponseEntity<TokensDto> refresh() {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
+//
+//    @PostMapping("/revoke")
+//    public ResponseEntity<Void> revoke() {
+//        throw new UnsupportedOperationException("Not supported yet.");
+//    }
 }

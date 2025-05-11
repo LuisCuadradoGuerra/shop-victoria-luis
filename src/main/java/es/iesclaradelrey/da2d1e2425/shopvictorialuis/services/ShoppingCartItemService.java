@@ -9,7 +9,7 @@ public interface ShoppingCartItemService {
     long count();
     void save(ShoppingCartItem trolley);
     List<ShoppingCartItem> findAll();
-    List<ShoppingCartItem> findByAppUserId(Long id);
+//    List<ShoppingCartItem> findByAppUserId(Long id);
     int addToTrolley(Long productId, Long quantity);
     void removeFromTrolley(Long productId);
     void deleteFromTrolley(Long productId);

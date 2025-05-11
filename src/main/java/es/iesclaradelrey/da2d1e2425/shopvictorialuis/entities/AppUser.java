@@ -47,7 +47,7 @@ public class AppUser {
     @Column(name = "app_user_email", nullable = false, length = 200)
     private String appUserEmail;
 
-    @OneToMany(mappedBy = "appUser")
-    private Set<ShoppingCartItem> shoppingCartItems = new LinkedHashSet<>();
+//    @OneToMany(mappedBy = "appUser")
+//    private Set<ShoppingCartItem> shoppingCartItems = new LinkedHashSet<>();
 
 }

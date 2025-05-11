@@ -43,10 +43,10 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
         return shoppingCartItemRepository.findAll();
     }
 
-    @Override
-    public List<ShoppingCartItem> findByAppUserId(Long appUserId) {
-        return shoppingCartItemRepository.findAllByAppUserAppUserId(appUserId);
-    }
+//    @Override
+//    public List<ShoppingCartItem> findByAppUserId(Long appUserId) {
+//        return shoppingCartItemRepository.findAllByAppUserAppUserId(appUserId);
+//    }
 
     @Override
     public int addToTrolley(Long productId, Long quantity) {

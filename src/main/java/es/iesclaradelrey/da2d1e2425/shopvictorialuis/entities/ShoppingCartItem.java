@@ -33,11 +33,11 @@ public class ShoppingCartItem {
     @JoinColumn(name = "product_id", nullable = false)
     private Product product;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @JoinColumn(name = "app_user_id", nullable = false)
-    private AppUser appUser;
+//    @NotNull
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @JoinColumn(name = "app_user_id", nullable = false)
+//    private AppUser appUser;
 
     public ShoppingCartItem(Long i, Product product) {
         itemsCount = i;

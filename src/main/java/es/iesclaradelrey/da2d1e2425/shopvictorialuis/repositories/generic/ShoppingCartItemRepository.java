@@ -12,5 +12,5 @@ public interface ShoppingCartItemRepository extends JpaRepository<ShoppingCartIt
     @Query(value = "select * from shopping_cart_items sci where sci.product_id = :id", nativeQuery = true)
     Optional<ShoppingCartItem> findByProductId(@Param("id")Long productId);
 
-    List<ShoppingCartItem> findAllByAppUserAppUserId(Long appUserId);
+//    List<ShoppingCartItem> findAllByAppUserAppUserId(Long appUserId);
 }
