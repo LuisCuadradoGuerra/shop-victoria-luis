@@ -60,7 +60,7 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
 //      Check if that product is already in the shopping cart and add the quantity
         ShoppingCartItem shoppingCartItem = shoppingCartItemRepository
                 .findByProductId(productId,appUserService.getCurrentAppUserId())
-                .orElse(new ShoppingCartItem(0L, product));
+                .orElse(new ShoppingCartItem(0L, product, appUserService.getCurrentAppUser()));
         shoppingCartItem.setItemsCount(shoppingCartItem.getItemsCount() + quantity);
 
 //      Check stock available
@@ -70,7 +70,7 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
 
 //      Save changes
         shoppingCartItemRepository.save(shoppingCartItem);
-        return shoppingCartItemRepository.findAll().stream().mapToInt(item -> item.getItemsCount().intValue()).sum();
+        return shoppingCartItemRepository.findAllByAppUserAppUserId(appUserService.getCurrentAppUserId()).stream().mapToInt(item -> item.getItemsCount().intValue()).sum();
 
     }
 

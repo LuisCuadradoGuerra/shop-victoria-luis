@@ -39,9 +39,10 @@ public class ShoppingCartItem {
     @JoinColumn(name = "app_user_id", nullable = false)
     private AppUser appUser;
 
-    public ShoppingCartItem(Long i, Product product) {
+    public ShoppingCartItem(Long i, Product product, AppUser appUser) {
         itemsCount = i;
         this.product = product;
+        this.appUser = appUser;
     }
 
     public Long getQuantity() {
