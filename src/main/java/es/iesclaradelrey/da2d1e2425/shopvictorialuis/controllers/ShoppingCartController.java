@@ -9,15 +9,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class ShoppingCartController extends BasicController {
 
+
     public ShoppingCartController(ShoppingCartItemService shoppingCartItemService) {
         super(shoppingCartItemService);
     }
 
-//    @GetMapping("/add-to-trolley/{id}")
-//    public String addToTrolley(@PathVariable(name = "id") Long productId, @RequestParam(name = "lastUrl") String lastUrl) {
-//        getShoppingCartItemService().addToTrolley(productId);
-//        return "redirect:" + lastUrl;
-//    }
+    @GetMapping("/add-to-trolley/{id}")
+    public String addToTrolley(@PathVariable(name = "id") Long productId, @RequestParam(name = "lastUrl") String lastUrl) {
+        getShoppingCartItemService().addToTrolley(productId,1L);
+        return "redirect:" + lastUrl;
+    }
 
     @GetMapping("/remove-from-trolley/{id}")
     public String removeToTrolley(@PathVariable(name = "id") Long productId, @RequestParam(name = "lastUrl") String lastUrl) {

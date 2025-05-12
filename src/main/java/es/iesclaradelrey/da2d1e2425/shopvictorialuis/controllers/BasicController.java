@@ -16,6 +16,7 @@ public class BasicController {
     @Getter(AccessLevel.PACKAGE)
     private final ShoppingCartItemService shoppingCartItemService;
 
+
     public BasicController(ShoppingCartItemService shoppingCartItemService) {
         this.shoppingCartItemService = shoppingCartItemService;
     }
@@ -27,7 +28,7 @@ public class BasicController {
 
     @ModelAttribute
     public void shoppingCartProducts(Model model) {
-        List<ShoppingCartItem> shoppingCartItems = shoppingCartItemService.findAll();
+        List<ShoppingCartItem> shoppingCartItems = shoppingCartItemService.findByAppUserId();
         model.addAttribute("shoppingCartProducts", shoppingCartItems);
         model.addAttribute("shoppingCartProductsCount", shoppingCartItems.stream().mapToLong(ShoppingCartItem::getItemsCount).sum());
         model.addAttribute("shoppingCartProductsPriceTotal", shoppingCartItems.stream()

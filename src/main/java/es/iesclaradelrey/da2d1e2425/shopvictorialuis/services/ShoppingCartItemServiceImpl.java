@@ -21,11 +21,13 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
     private final ShoppingCartItemRepository shoppingCartItemRepository;
     private final ProductRepository productRepository;
     private final ModelMapper modelMapper;
+    private final AppUserService appUserService;
 
-    public ShoppingCartItemServiceImpl(ShoppingCartItemRepository shoppingCartItemRepository, ProductRepository productRepository, ModelMapper modelMapper) {
+    public ShoppingCartItemServiceImpl(ShoppingCartItemRepository shoppingCartItemRepository, ProductRepository productRepository, ModelMapper modelMapper, AppUserService appUserService) {
         this.shoppingCartItemRepository = shoppingCartItemRepository;
         this.productRepository = productRepository;
         this.modelMapper = modelMapper;
+        this.appUserService = appUserService;
     }
 
     @Override
@@ -37,15 +39,15 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
     public void save(ShoppingCartItem trolley) {
         shoppingCartItemRepository.save(trolley);
     }
+//
+//    @Override
+//    public List<ShoppingCartItem> findAll() {
+//        return shoppingCartItemRepository.findAll();
+//    }
 
     @Override
-    public List<ShoppingCartItem> findAll() {
-        return shoppingCartItemRepository.findAll();
-    }
-
-    @Override
-    public List<ShoppingCartItem> findByAppUserId(Long appUserId) {
-        return shoppingCartItemRepository.findAllByAppUserAppUserId(appUserId);
+    public List<ShoppingCartItem> findByAppUserId() {
+        return shoppingCartItemRepository.findAllByAppUserAppUserId(appUserService.getCurrentAppUserId());
     }
 
     @Override
@@ -57,7 +59,7 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
 
 //      Check if that product is already in the shopping cart and add the quantity
         ShoppingCartItem shoppingCartItem = shoppingCartItemRepository
-                .findByProductId(productId)
+                .findByProductId(productId,appUserService.getCurrentAppUserId())
                 .orElse(new ShoppingCartItem(0L, product));
         shoppingCartItem.setItemsCount(shoppingCartItem.getItemsCount() + quantity);
 
@@ -74,7 +76,7 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
 
     @Override
     public void removeFromTrolley(Long productId) {
-        ShoppingCartItem item = shoppingCartItemRepository.findByProductId(productId).orElse(null);
+        ShoppingCartItem item = shoppingCartItemRepository.findByProductId(productId,appUserService.getCurrentAppUserId()).orElse(null);
         if (item != null) {
             item.setItemsCount(item.getItemsCount() - 1);
             shoppingCartItemRepository.save(item);
@@ -86,18 +88,17 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
 
     @Override
     public void deleteFromTrolley(Long productId) {
-        shoppingCartItemRepository.findByProductId(productId).ifPresent(shoppingCartItemRepository::delete);
+        shoppingCartItemRepository.findByProductId(productId,appUserService.getCurrentAppUserId()).ifPresent(shoppingCartItemRepository::delete);
     }
 
     @Override
     public void clearTrolley() {
-        shoppingCartItemRepository.deleteAll();
+        shoppingCartItemRepository.deleteAllByAppUser_AppUserId(appUserService.getCurrentAppUserId());
     }
 
     @Override
     public AppShoppingCartDto getShoppingCartToApp() {
-//        todo Cuando ponga usuarios, no hacer un findAll
-        List<ShoppingCartItem> shoppingCartItems = shoppingCartItemRepository.findAll();
+        List<ShoppingCartItem> shoppingCartItems = shoppingCartItemRepository.findAllByAppUserAppUserId(appUserService.getCurrentAppUserId());
         return new AppShoppingCartDto(
                 shoppingCartItems
                         .stream()
