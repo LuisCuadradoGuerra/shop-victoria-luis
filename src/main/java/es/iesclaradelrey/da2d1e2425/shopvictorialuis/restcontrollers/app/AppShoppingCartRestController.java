@@ -33,9 +33,11 @@ public class AppShoppingCartRestController {
 
     @DeleteMapping("/{productId}")
     public AppShoppingCartDto removeShoppingCart(@PathVariable(name = "productId") Long productId) {
-        shoppingCartItemService.removeFromTrolley(productId);
+        shoppingCartItemService.deleteFromTrolley(productId);
         return shoppingCartItemService.getShoppingCartToApp();
     }
+
+
     @DeleteMapping({"/",""})
     public AppShoppingCartDto removeShoppingCart() {
         shoppingCartItemService.clearTrolley();
