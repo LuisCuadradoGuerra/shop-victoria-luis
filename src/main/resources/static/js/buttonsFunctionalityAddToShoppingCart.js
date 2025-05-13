@@ -1,7 +1,7 @@
 Array.from(document.querySelectorAll("button.add-to-cart-button"))
     .forEach(button => {
         button.addEventListener("click", (ev) => {
-            fetch(appPath + "api/v1", {
+            fetch(appPath + "ajax/add-product", {
                 method: "POST",
                 body: JSON.stringify({
                     productId: ev.target.getAttribute("data-product-id"),

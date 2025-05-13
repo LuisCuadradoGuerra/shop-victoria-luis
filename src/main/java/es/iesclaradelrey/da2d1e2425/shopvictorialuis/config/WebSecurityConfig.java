@@ -13,6 +13,7 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain webSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.ignoringRequestMatchers("/ajax/add-product"));
 
         http.
                 authorizeHttpRequests(auth ->

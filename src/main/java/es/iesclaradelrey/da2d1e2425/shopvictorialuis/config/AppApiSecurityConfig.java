@@ -44,7 +44,7 @@ public class AppApiSecurityConfig {
                                 .requestMatchers("/api/app/v1/**").permitAll()
                                 // Flujo: importante a la hora de aplicar las reglas de autorización
                                 .requestMatchers("/api/app/v1/auth/**").permitAll()
-                                .anyRequest().authenticated());
+                                .anyRequest().permitAll());
 
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

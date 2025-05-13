@@ -30,8 +30,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final String BEARER_PREFIX = "Bearer ";
     // Ruta que se desea proteger
     private static final String PROTECTED_PATH = "/api/**";
+
+    private static final String AUTH_PATH = "/api/app/v1/auth/**";
     // Matcher para comprobar si una petición está en la ruta protegida
     private static final AntPathRequestMatcher protectedPathMatcher = new AntPathRequestMatcher(PROTECTED_PATH);
+    private static final AntPathRequestMatcher authPathMatcher = new AntPathRequestMatcher(AUTH_PATH);
 
     public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
         this.jwtService = jwtService;
@@ -61,8 +64,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // Mejor usar un "Matcher", que permite usar paths más flexibles.
         // En concreto, "AntPathRequestMatcher" permite trabajar directamente con la petición (HttpServletrequest)
         // ahorrando el procesamiento de cadenas. Además, permite usar comodines estilo "Apache Ant", como **, * o *.extensión
-        if (protectedPathMatcher.matches(request)) {
-            System.out.println("Autenticando peticion");
+        if (protectedPathMatcher.matches(request) && !authPathMatcher.matches(request)) {
+            System.out.println("Autenticando petición");
             // En el try se hacen varias cosas que pueden lanzar excepción.
             // Si cualquiera de ellas falla, se deniega el acceso.
             try {
