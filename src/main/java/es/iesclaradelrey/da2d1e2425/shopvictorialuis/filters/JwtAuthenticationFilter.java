@@ -50,6 +50,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     @NonNull HttpServletResponse response,
                                     @NonNull FilterChain filterChain) throws ServletException, IOException {
 
+        System.out.println("Analizando URL " + request.getRequestURI());
+
         // Primero, obtener la ruta de la petición
         // Esto no es lo más adecuado porque getRequestURI da la dirección con el contextPath.
         // Así es difícil realizar comprobaciones de rutas, porque dependen del contexpath, o de dónde se
@@ -60,6 +62,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         // En concreto, "AntPathRequestMatcher" permite trabajar directamente con la petición (HttpServletrequest)
         // ahorrando el procesamiento de cadenas. Además, permite usar comodines estilo "Apache Ant", como **, * o *.extensión
         if (protectedPathMatcher.matches(request)) {
+            System.out.println("Autenticando peticion");
             // En el try se hacen varias cosas que pueden lanzar excepción.
             // Si cualquiera de ellas falla, se deniega el acceso.
             try {

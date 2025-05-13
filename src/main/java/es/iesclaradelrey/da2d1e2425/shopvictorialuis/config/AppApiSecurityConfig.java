@@ -40,7 +40,7 @@ public class AppApiSecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
 //                                todo remove. Esta linea es para las pruebas en android
-                                .requestMatchers("/api/v1/**").permitAll()
+                                .requestMatchers("/api/**").permitAll()
                                 .requestMatchers("/api/app/v1/**").permitAll()
                                 // Flujo: importante a la hora de aplicar las reglas de autorización
                                 .requestMatchers("/api/app/v1/auth/**").permitAll()

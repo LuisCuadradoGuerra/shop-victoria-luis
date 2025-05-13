@@ -24,15 +24,4 @@ public class HomeController extends BasicController{
         return new ModelAndView("index", "categories", categories);
     }
 
-    @GetMapping("/login")
-    public String login() {
-        return "login";
-    }
-
-    @GetMapping("/register")
-    public String register() {
-        return "register";
-    }
-
-//    todo PostMapping("/register") para registrarse
 }
