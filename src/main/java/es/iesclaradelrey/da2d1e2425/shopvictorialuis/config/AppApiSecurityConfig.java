@@ -18,12 +18,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@Order(200)
+@Order(3)
 public class AppApiSecurityConfig {
 
     @Bean
     public SecurityFilterChain appApiSecurityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
-        http.securityMatcher("/api/app/**");
+        http.securityMatcher("/api/**");
 
         // Quitar protección CSRF porque en API no se usan formularios.
         http.csrf(AbstractHttpConfigurer::disable);
@@ -40,6 +40,7 @@ public class AppApiSecurityConfig {
                 .authorizeHttpRequests(auth ->
                         auth
 //                                todo remove. Esta linea es para las pruebas en android
+                                .requestMatchers("/api/v1/**").permitAll()
                                 .requestMatchers("/api/app/v1/**").permitAll()
                                 // Flujo: importante a la hora de aplicar las reglas de autorización
                                 .requestMatchers("/api/app/v1/auth/**").permitAll()

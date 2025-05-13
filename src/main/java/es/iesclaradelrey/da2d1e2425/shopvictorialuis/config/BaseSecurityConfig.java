@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@Order(0)
+@Order(2)
 public class BaseSecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder() {
