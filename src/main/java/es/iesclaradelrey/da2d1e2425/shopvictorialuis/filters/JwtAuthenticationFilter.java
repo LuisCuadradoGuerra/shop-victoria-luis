@@ -32,9 +32,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private static final String PROTECTED_PATH = "/api/**";
 
     private static final String AUTH_PATH = "/api/app/v1/auth/**";
+
+//    private static final String INDEX_PATH = "/";
     // Matcher para comprobar si una petición está en la ruta protegida
     private static final AntPathRequestMatcher protectedPathMatcher = new AntPathRequestMatcher(PROTECTED_PATH);
+
     private static final AntPathRequestMatcher authPathMatcher = new AntPathRequestMatcher(AUTH_PATH);
+
+//    private static final AntPathRequestMatcher indexPathMatcher = new AntPathRequestMatcher(INDEX_PATH);
 
     public JwtAuthenticationFilter(JwtService jwtService, UserDetailsService userDetailsService) {
         this.jwtService = jwtService;

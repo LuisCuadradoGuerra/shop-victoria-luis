@@ -40,6 +40,10 @@ public class AuthController {
         AppUser appUser = appUserService.login(loginUserDto);
         String accessToken = jwtService.generateAccessToken(appUser);
         String refreshToken = jwtService.generateRefreshToken(appUser);
+        System.out.println(ResponseEntity.ok(TokensDto.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build()));
         return ResponseEntity.ok(TokensDto.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
