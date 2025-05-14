@@ -10,6 +10,7 @@ import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.Produc
 import es.iesclaradelrey.da2d1e2425.shopvictorialuis.repositories.generic.ShoppingCartItemRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -91,7 +92,9 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
         shoppingCartItemRepository.findByProductId(productId,appUserService.getCurrentAppUserId()).ifPresent(shoppingCartItemRepository::delete);
     }
 
+//    Fallo por no ser transactional segun gpt...
     @Override
+    @Transactional
     public void clearTrolley() {
         shoppingCartItemRepository.deleteAllByAppUser_AppUserId(appUserService.getCurrentAppUserId());
     }
