@@ -24,7 +24,7 @@ public class AppProductController {
     public ResponseEntity<Page<AppFindProductDto>> productsFinder(@RequestParam(defaultValue = "") String search,
                                                   @RequestParam(defaultValue = "") Long cat,
                                                   @RequestParam(defaultValue = "1") Integer pageNumber,
-                                                  @RequestParam(defaultValue = "10") Integer pageSize,
+                                                  @RequestParam(defaultValue = "3") Integer pageSize,
                                                   @RequestParam(defaultValue = "productName") String orderAttribute,
                                                   @RequestParam(defaultValue = "asc") String orderDirection,
                                                   Model model) {
