@@ -14,7 +14,7 @@ CREATE TABLE categories
     title                VARCHAR(50)   NOT NULL,
     category_description VARCHAR(1000) NOT NULL,
     category_icon        VARCHAR(300),
-    CONSTRAINT unique_title UNIQUE (title) -- Opcional, si deseas que los títulos de las categorías sean únicos
+    CONSTRAINT unique_title UNIQUE (title)
 );
 
 
